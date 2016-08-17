@@ -3,6 +3,7 @@
 namespace Padosoft\Io;
 
 use Padosoft\Io\DirHelper;
+use SebastianBergmann\CodeCoverage\Report\Html\File;
 
 /**
  * Helper Class FileHelper
@@ -28,7 +29,7 @@ class FileHelper
         }
 
         //if ends with '/' is a dir
-        if (($temp = strlen($filePath) - strlen('/')) >= 0 && strpos($filePath, '/', $temp) !== false) {
+        if (DirHelper::endsWithSlash($filePath)) {
             return '';
         }
 
@@ -45,11 +46,11 @@ class FileHelper
      */
     public static function unlinkSafe(string $filePath) : bool
     {
-        if (!file_exists($filePath)) {
+        if (!FileHelper::fileExistsSafe($filePath)) {
             return false;
         }
 
-        if (is_dir($filePath)) {
+        if (DirHelper::isDirSafe($filePath)) {
             return false;
         }
 
@@ -64,11 +65,11 @@ class FileHelper
      */
     public static function fileExistsSafe(string $filePath) : bool
     {
-        if (!$filePath) {
+        if ($filePath===null || $filePath=='') {
             return false;
         }
 
-        if (is_dir($filePath)) {
+        if (DirHelper::isDirSafe($filePath)) {
             return false;
         }
 
@@ -88,12 +89,12 @@ class FileHelper
         $fallback = [];
 
         if (($fileNamePattern === null || $fileNamePattern == '') && function_exists('base_path')) {
-            $fileNamePattern = DirHelper::addFinalSlash(base_path()).'*';
-        }elseif ($fileNamePattern === null || $fileNamePattern == '') {
-            $fileNamePattern = __DIR__.'/*';
+            $fileNamePattern = DirHelper::addFinalSlash(base_path()) . '*';
+        } elseif ($fileNamePattern === null || $fileNamePattern == '') {
+            $fileNamePattern = __DIR__ . '/*';
         }
 
-        if(DirHelper::endsWithSlash($fileNamePattern)){
+        if (DirHelper::endsWithSlash($fileNamePattern)) {
             $fileNamePattern .= '*';
         }
 
@@ -101,22 +102,22 @@ class FileHelper
 
         //remove array of empty string
         $files = array_filter($files, function ($k) {
-            return ($k!==null && $k != '');
+            return ($k !== null && $k != '');
         });
 
-        if(empty($files)){
+        if (empty($files)) {
             return $fallback;
         }
 
-        foreach (glob(dirname($fileNamePattern).'/*',GLOB_ONLYDIR|GLOB_NOSORT) as $dir){
+        foreach (glob(dirname($fileNamePattern) . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $dir) {
 
-            if(empty($dir)){
+            if (empty($dir)) {
                 continue;
             }
 
-            $files = array_merge($files, self::findFiles($dir.'/'.basename($fileNamePattern), $flags));
+            $files = array_merge($files, self::findFiles($dir . '/' . basename($fileNamePattern), $flags));
             $files = array_filter($files, function ($k) {
-                return ($k!==null && $k != '');
+                return ($k !== null && $k != '');
             });
         }
 
@@ -155,7 +156,7 @@ class FileHelper
         }
 
         //check if a directory passed ($filename ends with slash)
-        if (($temp = strlen($filename) - strlen('/')) >= 0 && strpos($filename, '/', $temp) !== false) {
+        if (DirHelper::endsWithSlash($filename)) {
             return false;
         }
 

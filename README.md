@@ -6,7 +6,7 @@
 [![Build Status](https://img.shields.io/travis/padosoft/io/master.svg?style=flat-square)](https://travis-ci.org/padosoft/io)
 [![Quality Score](https://img.shields.io/scrutinizer/g/padosoft/io.svg?style=flat-square)](https://scrutinizer-ci.com/g/padosoft/io)
 [![Total Downloads](https://img.shields.io/packagist/dt/padosoft/io.svg?style=flat-square)](https://packagist.org/packages/padosoft/io)
-[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/4570b2c7-71c6-4b11-9214-da078fb51a98.svg?style=flat-square)](https://insight.sensiolabs.com/projects/4570b2c7-71c6-4b11-9214-da078fb51a98)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/e5f0885a-912d-4bd8-a6c4-76127603d2b6.svg?style=flat-square)](https://insight.sensiolabs.com/projects/e5f0885a-912d-4bd8-a6c4-76127603d2b6)
 
 This is a simple agnostic package with few or zero dipendencies. 
 This is ideal to provides support and helpers for creating packeges without include many and many dipendencies.

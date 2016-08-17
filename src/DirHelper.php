@@ -166,7 +166,7 @@ class DirHelper
         $files = glob($pathPattern, GLOB_ONLYDIR);
 
         foreach (glob(dirname($pathPattern).'/*',GLOB_ONLYDIR|GLOB_NOSORT) as $dir){
-            $files = array_merge($files, self::findDirs($dir.'/'.basename($pathPattern), GLOB_ONLYDIR));
+            $files = array_merge($files, self::findDirs($dir.'/'.basename($pathPattern)));
         }
 
         return $files;
