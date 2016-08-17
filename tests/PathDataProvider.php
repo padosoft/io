@@ -314,6 +314,7 @@ trait PathDataProvider
             rmdir(__DIR__ . '/resources/new2/');
         }
 
+        /*
         $dir = __DIR__ . '/resources/subdir/';
 
         $file = $dir . 'dummy.txt';
@@ -337,6 +338,7 @@ trait PathDataProvider
         if (is_dir($dir)) {
             rmdir($dir);
         }
+        */
     }
 
 }
