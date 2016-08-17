@@ -20,12 +20,7 @@ class FileHelper
      */
     public static function getFilenameWithoutExtension(string $filePath) : string
     {
-        if ($filePath===null || $filePath=='') {
-            return '';
-        }
-
-        //if is dir or ends with '/' is a dir
-        if (is_dir($filePath) || DirHelper::endsWithSlash($filePath)) {
+        if ($filePath===null || $filePath=='' || is_dir($filePath) || DirHelper::endsWithSlash($filePath)) {
             return '';
         }
 

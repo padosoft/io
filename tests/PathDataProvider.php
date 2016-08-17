@@ -160,7 +160,6 @@ trait PathDataProvider
             __DIR__ . '/../vendor' => [__DIR__ . '/../vendor', false],
             __DIR__ . '/../*' => [__DIR__ . '/../*', true],
             __DIR__ . '/..' => [__DIR__ . '/..', false],
-            __DIR__ => [__DIR__, false],
             __DIR__ . '/../vendor/2/3/4/5/*' => [__DIR__ . '/../vendor/2/3/4/5/*', true],
             __DIR__ . '/../vendor/2/3/4/5' => [__DIR__ . '/../vendor/2/3/4/5', false],
         ];
@@ -174,13 +173,13 @@ trait PathDataProvider
         return [
             '' => ['', false],
             'null' => [null, 'TypeError'],
-            __DIR__ . '/pippo.txt' => [__DIR__ . '/pippo.txt', false],
-            __DIR__ . '/../vendor/' => [__DIR__ . '/../vendor/', false],
-            __DIR__ . '/../vendor' => [__DIR__ . '/../vendor', false],
-            __DIR__ . '/../' => [__DIR__ . '/../', false],
-            __DIR__ . '/..' => [__DIR__ . '/..', false],
-            __DIR__ => [__DIR__, false],
-            __DIR__ . '/' => [__DIR__ . '/', false],
+            'dfsfs.txt' => ['dfsfs.txt', false],
+            '../vendor/' => ['../vendor/', false],
+            '/../vendor' => ['/../vendor', true],
+            '/../' => ['/../', true],
+            '../' => ['../', false],
+            '/..' => ['/..', true],
+            '/' => ['/', true],
         ];
     }
 
@@ -246,8 +245,8 @@ trait PathDataProvider
             'null' => [null, 'TypeError'],
             __DIR__ . '/pippo.txt' => [__DIR__ . '/pippo.txt', 'pippo'],
             '/pippo.txt' => ['/pippo.txt', 'pippo'],
-            '../vendor/' => ['../vendor/', ''],
-            '../vendor' => ['../vendor', ''],
+            __DIR__ . '/../vendor/' => [__DIR__ . '/../vendor/', ''],
+            __DIR__ . '/../vendor' => [__DIR__ . '/../vendor', ''],
             __DIR__ . '/../' => [__DIR__ . '/../', ''],
             __DIR__ . '/..' => [__DIR__ . '/..', ''],
             __DIR__ => [__DIR__, ''],
