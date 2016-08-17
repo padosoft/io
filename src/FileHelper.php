@@ -2,9 +2,6 @@
 
 namespace Padosoft\Io;
 
-use Padosoft\Io\DirHelper;
-use SebastianBergmann\CodeCoverage\Report\Html\File;
-
 /**
  * Helper Class FileHelper
  * @package Padosoft\Io
