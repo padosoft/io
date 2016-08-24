@@ -104,10 +104,10 @@ class DirHelper
      */
     public static function endsWith(string $paths, string $needle) : bool
     {
-        if ($paths===null || $paths=='') {
+        if ($paths === null || $paths == '') {
             return false;
         }
-        if ($needle===null || $needle=='') {
+        if ($needle === null || $needle == '') {
             return false;
         }
 
@@ -134,10 +134,10 @@ class DirHelper
      */
     public static function startsWith(string $paths, string $needle) : bool
     {
-        if ($paths===null || $paths=='') {
+        if ($paths === null || $paths == '') {
             return false;
         }
-        if ($needle===null || $needle=='') {
+        if ($needle === null || $needle == '') {
             return false;
         }
 
@@ -156,19 +156,69 @@ class DirHelper
     public static function findDirs(string $pathPattern)
     {
         if (($pathPattern === null || $pathPattern == '') && function_exists('base_path')) {
-            $pathPattern = base_path().'/*';
-        }elseif ($pathPattern === null || $pathPattern == '') {
-            $pathPattern = __DIR__.'/*';
-        }elseif(!self::endsWithStar($pathPattern)){
+            $pathPattern = base_path() . '/*';
+        } elseif ($pathPattern === null || $pathPattern == '') {
+            $pathPattern = __DIR__ . '/*';
+        } elseif (!self::endsWithStar($pathPattern)) {
             $pathPattern = DirHelper::addFinalSlash($pathPattern);
         }
 
         $files = glob($pathPattern, GLOB_ONLYDIR);
 
-        foreach (glob(dirname($pathPattern).'/*',GLOB_ONLYDIR|GLOB_NOSORT) as $dir){
-            $files = array_merge($files, self::findDirs($dir.'/'.basename($pathPattern)));
+        foreach (glob(dirname($pathPattern) . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $dir) {
+            $files = array_merge($files, self::findDirs($dir . '/' . basename($pathPattern)));
         }
 
         return $files;
+    }
+
+    /**
+     * Dir::Delete()
+     * get a dir path and remove all files and subdir in this dir.
+     * if $not_remove_dir==TRUE then when finish DO NOT REMOVE THE $directory dir.
+     * @param string $directory directory to empty
+     * @param bool $not_remove_dir TRUE if DO NOT REMOVE THE $directory dir but only files.
+     * @return bool TRUE if success, otherwise FALSE
+     **/
+    public static function delete($directory, bool $not_remove_dir = false) : bool
+    {
+        $directory = self::removeFinalSlash($directory);
+
+        if (!self::isDirSafe($directory) || !is_readable($directory)) {
+            return false;
+        }
+
+        $directoryHandle = opendir($directory);
+        while ($contents = readdir($directoryHandle)) {
+            if ($contents == '.' || $contents == '..') {
+                continue;
+            }
+            $path = $directory . "/" . $contents;
+
+            if (is_dir($path)) {
+                self::delete($path, $not_remove_dir);
+            } else {
+                unlink($path);
+            }
+        }
+        closedir($directoryHandle);
+
+        if (!$not_remove_dir) {
+            return true;
+        }
+        return rmdir($directory);
+    }
+
+    /**
+     * Remove final slash ('/') char in dir if ends with slash.
+     * @param $directory
+     * @return string
+     */
+    public static function removeFinalSlash($directory) : string
+    {
+        if (self::endsWithSlash($directory)) {
+            $directory = substr($directory, 0, -1);
+        }
+        return $directory;
     }
 }
