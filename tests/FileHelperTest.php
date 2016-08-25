@@ -124,4 +124,89 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
             $this->assertCount(count($expected), $result);
         }
     }
+
+    /**
+     * @test
+     * @param $path
+     * @param $options
+     * @param $expected
+     * @dataProvider getPathinfoPartProvider
+     */
+    public function getPathinfoPartTest($path, $options, $expected)
+    {
+        if ($this->expectedIsAnException($expected)) {
+            $this->expectException($expected);
+            FileHelper::getPathinfoPart($path, $options);
+        } else {
+            $this->assertEquals($expected, FileHelper::getPathinfoPart($path, $options));
+        }
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $options
+     * @param $expected
+     * @dataProvider getDirnameProvider
+     */
+    public function getDirnameTest($path, $options, $expected)
+    {
+        if ($this->expectedIsAnException($expected)) {
+            $this->expectException($expected);
+            FileHelper::getDirname($path);
+        } else {
+            $this->assertEquals($expected, FileHelper::getDirname($path));
+        }
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $options
+     * @param $expected
+     * @dataProvider getFilenameProvider
+     */
+    public function getFilenameTest($path, $options, $expected)
+    {
+        if ($this->expectedIsAnException($expected)) {
+            $this->expectException($expected);
+            FileHelper::getFilename($path);
+        } else {
+            $this->assertEquals($expected, FileHelper::getFilename($path));
+        }
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $options
+     * @param $expected
+     * @dataProvider getFilenameWithoutExtensionProvider
+     */
+    public function getFilenameWithoutExtensionTest($path, $options, $expected)
+    {
+        if ($this->expectedIsAnException($expected)) {
+            $this->expectException($expected);
+            FileHelper::getFilenameWithoutExtension($path);
+        } else {
+            $this->assertEquals($expected, FileHelper::getFilenameWithoutExtension($path));
+        }
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $options
+     * @param $expected
+     * @dataProvider getFilenameExtensionProvider
+     */
+    public function getFilenameExtensionTest($path, $options, $expected)
+    {
+        if ($this->expectedIsAnException($expected)) {
+            $this->expectException($expected);
+            FileHelper::getFilenameExtension($path);
+        } else {
+            $this->assertEquals($expected, FileHelper::getFilenameExtension($path));
+        }
+    }
 }

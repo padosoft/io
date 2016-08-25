@@ -238,6 +238,123 @@ trait PathDataProvider
     /**
      * @return array
      */
+    public function getPathinfoPartProvider()
+    {
+        return [
+            '\'\', PATHINFO_DIRNAME' => ['', PATHINFO_DIRNAME, ''],
+            '\'\', PATHINFO_BASENAME' => ['', PATHINFO_BASENAME, ''],
+            '\'\', PATHINFO_EXTENSION' => ['', PATHINFO_EXTENSION, ''],
+            '\'\', PATHINFO_FILENAME' => ['', PATHINFO_FILENAME, ''],
+            'null, PATHINFO_DIRNAME' => [null, PATHINFO_DIRNAME, 'TypeError'],
+            'null, PATHINFO_BASENAME' => [null, PATHINFO_BASENAME, 'TypeError'],
+            'null, PATHINFO_EXTENSION' => [null, PATHINFO_EXTENSION, 'TypeError'],
+            'null, PATHINFO_FILENAME' => [null, PATHINFO_FILENAME, 'TypeError'],
+            __DIR__ . '/pippo.txt, PATHINFO_DIRNAME' => [__DIR__ . '/pippo.txt', PATHINFO_DIRNAME, __DIR__],
+            __DIR__ . '/pippo.txt, PATHINFO_BASENAME' => [__DIR__ . '/pippo.txt', PATHINFO_BASENAME, 'pippo.txt'],
+            __DIR__ . '/pippo.txt, PATHINFO_EXTENSION' => [__DIR__ . '/pippo.txt', PATHINFO_EXTENSION, 'txt'],
+            __DIR__ . '/pippo.txt, PATHINFO_FILENAME' => [__DIR__ . '/pippo.txt', PATHINFO_FILENAME, 'pippo'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_DIRNAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_DIRNAME, __DIR__.'/../vendor'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_BASENAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_BASENAME, 'autoload.php'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_EXTENSION' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_EXTENSION, 'php'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_FILENAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_FILENAME, 'autoload'],
+            '/var/www/vhosts/, PATHINFO_DIRNAME' => ['/var/www/vhosts/', PATHINFO_DIRNAME, ''],
+            '/var/www/vhosts/, PATHINFO_BASENAME' => ['/var/www/vhosts/', PATHINFO_BASENAME, ''],
+            '/var/www/vhosts/, PATHINFO_EXTENSION' => ['/var/www/vhosts/', PATHINFO_EXTENSION, ''],
+            '/var/www/vhosts/, PATHINFO_FILENAME' => ['/var/www/vhosts/', PATHINFO_FILENAME, ''],
+            '/var/www/vhosts, PATHINFO_DIRNAME' => ['/var/www/vhosts', PATHINFO_DIRNAME, '/var/www'],
+            '/var/www/vhosts, PATHINFO_BASENAME' => ['/var/www/vhosts', PATHINFO_BASENAME, 'vhosts'],
+            '/var/www/vhosts, PATHINFO_EXTENSION' => ['/var/www/vhosts', PATHINFO_EXTENSION, ''],
+            '/var/www/vhosts, PATHINFO_FILENAME' => ['/var/www/vhosts', PATHINFO_FILENAME, 'vhosts'],
+            'vhosts, PATHINFO_DIRNAME' => ['vhosts', PATHINFO_DIRNAME, ''],
+            'vhosts, PATHINFO_BASENAME' => ['vhosts', PATHINFO_BASENAME, 'vhosts'],
+            'vhosts, PATHINFO_EXTENSION' => ['vhosts', PATHINFO_EXTENSION, ''],
+            'vhosts, PATHINFO_FILENAME' => ['vhosts', PATHINFO_FILENAME, 'vhosts'],
+            '.htaccess, PATHINFO_DIRNAME' => ['.htaccess', PATHINFO_DIRNAME, ''],
+            '.htaccess, PATHINFO_BASENAME' => ['.htaccess', PATHINFO_BASENAME, '.htaccess'],
+            '.htaccess, PATHINFO_EXTENSION' => ['.htaccess', PATHINFO_EXTENSION, 'htaccess'],
+            '.htaccess, PATHINFO_FILENAME' => ['.htaccess', PATHINFO_FILENAME, ''],
+            '., PATHINFO_DIRNAME' => ['.', PATHINFO_DIRNAME, ''],
+            '., PATHINFO_BASENAME' => ['.', PATHINFO_BASENAME, ''],
+            '., PATHINFO_EXTENSION' => ['.', PATHINFO_EXTENSION, ''],
+            '., PATHINFO_FILENAME' => ['.', PATHINFO_FILENAME, ''],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilenameExtensionProvider()
+    {
+        return [
+            '\'\', PATHINFO_EXTENSION' => ['', PATHINFO_EXTENSION, ''],
+            'null, PATHINFO_EXTENSION' => [null, PATHINFO_EXTENSION, 'TypeError'],
+            __DIR__ . '/pippo.txt, PATHINFO_EXTENSION' => [__DIR__ . '/pippo.txt', PATHINFO_EXTENSION, 'txt'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_EXTENSION' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_EXTENSION, 'php'],
+            '/var/www/vhosts/, PATHINFO_EXTENSION' => ['/var/www/vhosts/', PATHINFO_EXTENSION, ''],
+            '/var/www/vhosts, PATHINFO_EXTENSION' => ['/var/www/vhosts', PATHINFO_EXTENSION, ''],
+            'vhosts, PATHINFO_EXTENSION' => ['vhosts', PATHINFO_EXTENSION, ''],
+            '.htaccess, PATHINFO_EXTENSION' => ['.htaccess', PATHINFO_EXTENSION, 'htaccess'],
+            '., PATHINFO_EXTENSION' => ['.', PATHINFO_EXTENSION, ''],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilenameWithoutExtensionProvider()
+    {
+        return [
+            '\'\', PATHINFO_FILENAME' => ['', PATHINFO_FILENAME, ''],
+            'null, PATHINFO_FILENAME' => [null, PATHINFO_FILENAME, 'TypeError'],
+            __DIR__ . '/pippo.txt, PATHINFO_FILENAME' => [__DIR__ . '/pippo.txt', PATHINFO_FILENAME, 'pippo'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_FILENAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_FILENAME, 'autoload'],
+            '/var/www/vhosts/, PATHINFO_FILENAME' => ['/var/www/vhosts/', PATHINFO_FILENAME, ''],
+            '/var/www/vhosts, PATHINFO_FILENAME' => ['/var/www/vhosts', PATHINFO_FILENAME, 'vhosts'],
+            'vhosts, PATHINFO_FILENAME' => ['vhosts', PATHINFO_FILENAME, 'vhosts'],
+            '.htaccess, PATHINFO_FILENAME' => ['.htaccess', PATHINFO_FILENAME, ''],
+            '., PATHINFO_FILENAME' => ['.', PATHINFO_FILENAME, ''],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilenameProvider()
+    {
+        return [
+            '\'\', PATHINFO_BASENAME' => ['', PATHINFO_BASENAME, ''],
+            'null, PATHINFO_BASENAME' => [null, PATHINFO_BASENAME, 'TypeError'],
+            __DIR__ . '/pippo.txt, PATHINFO_BASENAME' => [__DIR__ . '/pippo.txt', PATHINFO_BASENAME, 'pippo.txt'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_BASENAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_BASENAME, 'autoload.php'],
+            '/var/www/vhosts/, PATHINFO_BASENAME' => ['/var/www/vhosts/', PATHINFO_BASENAME, ''],
+            '/var/www/vhosts, PATHINFO_BASENAME' => ['/var/www/vhosts', PATHINFO_BASENAME, 'vhosts'],
+            'vhosts, PATHINFO_BASENAME' => ['vhosts', PATHINFO_BASENAME, 'vhosts'],
+            '.htaccess, PATHINFO_BASENAME' => ['.htaccess', PATHINFO_BASENAME, '.htaccess'],
+            '., PATHINFO_BASENAME' => ['.', PATHINFO_BASENAME, ''],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getDirnameProvider()
+    {
+        return [
+            '\'\', PATHINFO_DIRNAME' => ['', PATHINFO_DIRNAME, ''],
+            'null, PATHINFO_DIRNAME' => [null, PATHINFO_DIRNAME, 'TypeError'],
+            __DIR__ . '/pippo.txt, PATHINFO_DIRNAME' => [__DIR__ . '/pippo.txt', PATHINFO_DIRNAME, __DIR__],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_DIRNAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_DIRNAME, __DIR__.'/../vendor'],
+            '/var/www/vhosts/, PATHINFO_DIRNAME' => ['/var/www/vhosts/', PATHINFO_DIRNAME, ''],
+            '/var/www/vhosts, PATHINFO_DIRNAME' => ['/var/www/vhosts', PATHINFO_DIRNAME, '/var/www'],
+            'vhosts, PATHINFO_DIRNAME' => ['vhosts', PATHINFO_DIRNAME, ''],
+            '.htaccess, PATHINFO_DIRNAME' => ['.htaccess', PATHINFO_DIRNAME, ''],
+            '., PATHINFO_DIRNAME' => ['.', PATHINFO_DIRNAME, ''],
+        ];
+    }
+
+    /**
+     * @return array
+     */
     public function pathForGetFilenameWithoutExtension()
     {
         return [

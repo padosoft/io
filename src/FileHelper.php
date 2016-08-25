@@ -9,21 +9,72 @@ namespace Padosoft\Io;
 class FileHelper
 {
     /**
+     * Simple pathinfo wrapper.
+     * @param string $filePath
+     * @param int $fileInfOoptions
+     * @return string
+     * @see http://php.net/manual/en/function.pathinfo.php
+     */
+    public static function getPathinfoPart(string $filePath, int $fileInfOoptions) : string
+    {
+        if ($filePath === null || $filePath == '' || is_dir($filePath) || DirHelper::endsWithSlash($filePath)) {
+            return '';
+        }
+
+        $info = pathinfo($filePath, $fileInfOoptions);
+
+        if ($info == '.' && $fileInfOoptions == PATHINFO_DIRNAME) {
+            return '';
+        }
+        return ($info !== null && $info != '') ? $info : '';
+    }
+
+    /**
      * Return the file name of file (without path and witout extension).
      * Return empty string if $filePath is null, empty or is a directory.
-     * Ex.: \public\upload\pippo.txt return 'pippo'
+     * Ex.: /public/upload/pippo.txt return '/public/upload'
+     * @param string $filePath
+     * @return string
+     */
+    public static function getDirname(string $filePath) : string
+    {
+        return self::getPathinfoPart($filePath, PATHINFO_DIRNAME);
+    }
+
+    /**
+     * Return the file name of file (without path and witout extension).
+     * Return empty string if $filePath is null, empty or is a directory.
+     * Ex.: /public/upload/pippo.txt return 'pippo.txt'
+     * @param string $filePath
+     * @return string
+     */
+    public static function getFilename(string $filePath) : string
+    {
+        return self::getPathinfoPart($filePath, PATHINFO_BASENAME);
+    }
+
+    /**
+     * Return the file name of file (without path and witout extension).
+     * Return empty string if $filePath is null, empty or is a directory.
+     * Ex.: /public/upload/pippo.txt return 'pippo'
      * @param string $filePath
      * @return string
      */
     public static function getFilenameWithoutExtension(string $filePath) : string
     {
-        if ($filePath===null || $filePath=='' || is_dir($filePath) || DirHelper::endsWithSlash($filePath)) {
-            return '';
-        }
+        return self::getPathinfoPart($filePath, PATHINFO_FILENAME);
+    }
 
-        $info = pathinfo($filePath);
-
-        return (is_array($info) && array_key_exists('filename', $info)) ? $info['filename'] : '';
+    /**
+     * Return the file name of file (without path and witout extension).
+     * Return empty string if $filePath is null, empty or is a directory.
+     * Ex.: /public/upload/pippo.txt return '.txt'
+     * @param string $filePath
+     * @return string
+     */
+    public static function getFilenameExtension(string $filePath) : string
+    {
+        return self::getPathinfoPart($filePath, PATHINFO_EXTENSION);
     }
 
     /**
@@ -53,7 +104,7 @@ class FileHelper
      */
     public static function fileExistsSafe(string $filePath) : bool
     {
-        if ($filePath===null || $filePath=='') {
+        if ($filePath === null || $filePath == '') {
             return false;
         }
 

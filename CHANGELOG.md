@@ -2,6 +2,11 @@
 
 All Notable changes to `io` will be documented in this file
 
+## 1.2.0-beta - 2016-08-25
+
+- ADD support for PHP 7.1.
+- ADD getPathinfoPart simple pathinfo wrapper and related helpers.
+
 ## 1.1.0 - 2016-08-24
 
 - ADD removeFinalSlash and delete new methods.
