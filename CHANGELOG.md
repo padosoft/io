@@ -2,6 +2,11 @@
 
 All Notable changes to `io` will be documented in this file
 
+## 1.3.1 - 2016-08-28
+
+- ADD arr of MimeType.
+- CHANGE method name to camelcase.
+
 ## 1.3.0 - 2016-08-28
 
 - ADD getMimeType.
