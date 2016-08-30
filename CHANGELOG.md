@@ -2,6 +2,11 @@
 
 All Notable changes to `io` will be documented in this file
 
+## 1.4.0 - 2016-08-30
+
+- ADD copy dir with all contents.
+- ADD removeFinalSlashToAllPaths.
+
 ## 1.3.1 - 2016-08-28
 
 - ADD arr of MimeType.

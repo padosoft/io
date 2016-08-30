@@ -199,4 +199,25 @@ class DirHelperTest extends \PHPUnit_Framework_TestCase
             $this->assertCount(count($expected), $result);
         }
     }
+
+    /**
+     * @test
+     */
+    public function copy()
+    {
+        DirHelper::copy(__DIR__.'/resources', __DIR__.'/resourcesNew',[],function($src, $dest){ echo "copy $src to $dest".PHP_EOL; });
+        $this->assertFileExists(__DIR__.'/resourcesNew/');
+        $this->assertFileExists(__DIR__.'/resourcesNew/dummy.txt');
+        $this->assertFileExists(__DIR__.'/resourcesNew/dummy.csv');
+        $this->assertFileExists(__DIR__.'/resourcesNew/subdir/');
+        $this->assertFileExists(__DIR__.'/resourcesNew/subdir/dummy.txt');
+        DirHelper::delete(__DIR__.'/resourcesNew');
+
+        DirHelper::copy(__DIR__.'/resources', __DIR__.'/resourcesNew', [__DIR__.'/resources/subdir']);
+        $this->assertFileExists(__DIR__.'/resourcesNew/');
+        $this->assertFileExists(__DIR__.'/resourcesNew/dummy.txt');
+        $this->assertFileExists(__DIR__.'/resourcesNew/dummy.csv');
+        $this->assertFileNotExists(__DIR__.'/resourcesNew/subdir/dummy.txt');
+        DirHelper::delete(__DIR__.'/resourcesNew');
+    }
 }

@@ -178,7 +178,7 @@ class DirHelper
      * if $not_remove_dir==TRUE then when finish DO NOT REMOVE THE $directory dir.
      * @param string $directory directory to empty
      * @param bool $not_remove_dir TRUE if DO NOT REMOVE THE $directory dir but only files.
-     * @return bool TRUE if success, otherwise FALSE
+     * @return bool true if success, otherwise false
      **/
     public static function delete($directory, bool $not_remove_dir = false) : bool
     {
@@ -189,7 +189,7 @@ class DirHelper
         }
 
         $directoryHandle = opendir($directory);
-        while ($contents = readdir($directoryHandle)) {
+        while (false !== ($contents = readdir($directoryHandle))) {
             if ($contents == '.' || $contents == '..') {
                 continue;
             }
@@ -220,5 +220,72 @@ class DirHelper
             $directory = substr($directory, 0, -1);
         }
         return $directory;
+    }
+
+    /**
+     * For each dir passed in array, check if not finishes with '/' otherwise remove a slash to path.
+     * If not dir, leave the element untouched.
+     * @param array $paths
+     * @return array
+     */
+    public static function removeFinalSlashToAllPaths(array $paths) : array
+    {
+        if (empty($paths)) {
+            return [];
+        }
+
+        return array_map('self::removeFinalSlash', $paths);
+    }
+
+    /**
+     * Dir::copy()
+     * Copy a source directory (files and all subdirectories) to destination directory.
+     * If Destination directory doesn't exists try to create it.
+     * @param $directorySource
+     * @param $directoryDestination
+     * @param array $excludedDirectory array of path to be escluded (i.e. it will not copied to destination folder)
+     * @param \Closure|null $copied a function with two arguments  ($directorySource,$directoryDestination).
+     * @return bool true if success, otherwise false
+     */
+    public static function copy(
+        $directorySource,
+        $directoryDestination,
+        array $excludedDirectory = [],
+        \Closure $copied = null
+    ) : bool
+    {
+        $directorySource = self::removeFinalSlash($directorySource);
+        if (!self::isDirSafe($directorySource) || !is_readable($directorySource)) {
+            return false;
+        }
+
+        $directoryDestination = self::removeFinalSlash($directoryDestination);
+        if (!self::checkDirExistOrCreate($directoryDestination)) {
+            return false;
+        }
+        is_callable($copied) ? $copied($directorySource, $directoryDestination) : '';
+
+        $excludedDirectory = self::removeFinalSlashToAllPaths($excludedDirectory);
+
+        $directorySourceHandle = opendir($directorySource);
+        while (false !== ($contents = readdir($directorySourceHandle))) {
+            if ($contents == '.' || $contents == '..') {
+                continue;
+            }
+            $path = $directorySource . "/" . $contents;
+            if (in_array(DirHelper::removeFinalSlash($path), $excludedDirectory)) {
+                continue;
+            }
+            $pathDest = $directoryDestination . "/" . $contents;
+
+            if (is_dir($path)) {
+                self::copy($path, $pathDest, $excludedDirectory);
+            } else {
+                copy($path, $pathDest);
+                is_callable($copied) ? $copied($path, $pathDest) : '';
+            }
+        }
+        closedir($directorySourceHandle);
+        return true;
     }
 }
