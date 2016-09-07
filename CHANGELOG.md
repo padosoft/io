@@ -2,6 +2,11 @@
 
 All Notable changes to `io` will be documented in this file
 
+## 1.5.0 - 2016-09-07
+
+### ADD
+- ADD LogHelper ftruncatestart method.
+
 ## 1.4.0 - 2016-08-30
 
 - ADD copy dir with all contents.

@@ -58,6 +58,14 @@ if(DirHelper::endsWithSlash('public/upload')){
 $arrFolders = DirHelper::findDirs('public/upload/*');
 var_dump($arrFolders);
 
+//truncate log to last 2000 bytes without truncate line
+echo 'before:'.PHP_EOL;
+echo file_get_contents('log.csv');
+if(LogHelper::ftruncatestart('log.csv', 2000)){
+    echo 'after:'.PHP_EOL;
+    echo file_get_contents('log.csv');
+}
+
 ```
 
 For all helpers see classes.

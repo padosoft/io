@@ -41,7 +41,7 @@ trait PathDataProvider
     public function filesToFindFilesProvider()
     {
         return [
-            '\'\'' => ['', ['DirHelper.php', 'FileHelper.php']],
+            '\'\'' => ['', ['DirHelper.php', 'FileHelper.php', 'LogHelper.php']],
             'null' => [null, 'TypeError'],
             __DIR__ . '/pippo.txt' => [__DIR__ . '/pippo.txt', []],
             __DIR__ . '/resources/dummy.txt' => [__DIR__ . '/resources/dummy.txt', ['resources/dummy.txt','resources/subdir/dummy.txt']],
@@ -49,7 +49,7 @@ trait PathDataProvider
             __DIR__ . '/resources' => [__DIR__ . '/resources', []],
             __DIR__ . '/resources/' => [__DIR__ . '/resources/', ['resources/dummy.csv', 'resources/dummy.txt','resources/subdir/dummy.txt']],
             __DIR__ . '/resources/*' => [__DIR__ . '/resources/*', ['resources/dummy.csv', 'resources/dummy.txt','resources/subdir/dummy.txt']],
-            __DIR__ . '/../tests/*' => [__DIR__.'/../tests/*', ['1', '2', '3', '4', '5', '6']],
+            __DIR__ . '/../tests/*' => [__DIR__.'/../tests/*', ['1', '2', '3', '4', '5', '6', '7']],
         ];
     }
 
