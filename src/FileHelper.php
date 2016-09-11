@@ -126,11 +126,15 @@ class FileHelper
      * Return empty string if $filePath is null, empty or is a directory.
      * Ex.: /public/upload/pippo.txt return '.txt'
      * @param string $filePath
+     * @param bool $ignoreCase if set to true return lowercase extension
+     * (Requires mbstring extension for correct multi-byte character handling in extension)
+     *
      * @return string
      */
-    public static function getFilenameExtension(string $filePath) : string
+    public static function getFilenameExtension(string $filePath, bool $ignoreCase = false) : string
     {
-        return self::getPathinfoPart($filePath, PATHINFO_EXTENSION);
+        $ext = self::getPathinfoPart($filePath, PATHINFO_EXTENSION);
+        return $ignoreCase ? self::toLower($ext) : $ext;
     }
 
     /**
@@ -151,30 +155,40 @@ class FileHelper
      */
     public static function hasExtension(string $path, $extensions = null, bool $ignoreCase = false) : bool
     {
-        if ('' === $path) {
-            return false;
-        }
-        $actualExtension = self::getFilenameExtension($path);
-        if ($ignoreCase) {
-            $actualExtension  = self::toLower($actualExtension );
-        }
+        $actualExtension = self::getFilenameExtension($path, $ignoreCase);
+
         // Only check if path has any extension
         if (null === $extensions) {
             return !empty($actualExtension);
         }
+
         // Make an array of extensions
-        if (!is_array($extensions)) {
-            $extensions = [ $extensions ];
-        }
+        $extensions = self::variable2Array($extensions);
+
         foreach ($extensions as $key => $extension) {
             if ($ignoreCase) {
                 $extension = self::toLower($extension);
             }
             // remove leading '.' in extensions array
-            $extensions[ $key ] = ltrim($extension, '.');
+            $extensions[$key] = ltrim($extension, '.');
         }
+
         return in_array($actualExtension, $extensions);
     }
+
+    /**
+     * if $extensions is not an array, return [$extensions].
+     * @param $extensions
+     * @return array
+     */
+    protected static function variable2Array($extensions) : array
+    {
+        if (is_array($extensions)) {
+            return $extensions;
+        }
+        return [$extensions];
+    }
+
     /**
      * Changes the extension of a path string.
      *

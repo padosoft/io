@@ -340,7 +340,7 @@ class DirHelper
      */
     public static function isAbsoluteUnix($path)
     {
-        return '' !== $path && '/' === $path[ 0 ];
+        return '' !== $path && '/' === $path[0];
     }
 
     /**
@@ -357,17 +357,27 @@ class DirHelper
         if ('' === $path) {
             return false;
         }
-        if ('\\' === $path[ 0 ]) {
+        if ('\\' === $path[0]) {
             return true;
         }
         // Windows root
-        if (strlen($path) > 1 && ctype_alpha($path[ 0 ]) && ':' === $path[ 1 ]) {
-            // Special case: "C:"
+        return self::isAbsoluteWindowsRoot($path);
+    }
+
+    /**
+     * Check if win special drive C: or Normal win drive C:/  C:\
+     * @param $path
+     * @return bool
+     */
+    protected static function isAbsoluteWindowsRoot($path):bool
+    {
+        if (strlen($path) > 1 && ctype_alpha($path[0]) && ':' === $path[1]) {
+            // Special win drive C:
             if (2 === strlen($path)) {
                 return true;
             }
-            // Normal case: "C:/ or "C:\"
-            if ('/' === $path[ 2 ] || '\\' === $path[ 2 ]) {
+            // Normal win drive C:/  C:\
+            if ('/' === $path[2] || '\\' === $path[2]) {
                 return true;
             }
         }
@@ -419,10 +429,11 @@ class DirHelper
             if ($key > 0) {
                 $argument = self::removeStartSlash($argument);
             }
-            $paths[ $key ] = $argument;
+            $paths[$key] = $argument;
         }
         return implode(DIRECTORY_SEPARATOR, $paths);
     }
+
     /**
      * Similar to the join() method, but also normalize()'s the result
      *
@@ -467,27 +478,38 @@ class DirHelper
         $path = str_replace('\\', '/', $path);
         list ($root, $path) = self::split($path);
         $parts = array_filter(explode('/', $path), 'strlen');
-        $canonicalParts = [ ];
-        // Collapse "." and "..", if possible
+        $canonicalParts = [];
+        // Collapse dot folder ., .., i f possible
         foreach ($parts as $part) {
-            if ('.' === $part) {
-                continue;
-            }
-            // Collapse ".." with the previous part, if one exists
-            // Don't collapse ".." if the previous part is also ".."
-            if ('..' === $part && count($canonicalParts) > 0
-                && '..' !== $canonicalParts[ count($canonicalParts) - 1 ]
-            ) {
-                array_pop($canonicalParts);
-                continue;
-            }
-            // Only add ".." prefixes for relative paths
-            if ('..' !== $part || '' === $root) {
-                $canonicalParts[] = $part;
-            }
+            self::collapseDotFolder($root, $part, $canonicalParts);
         }
         // Add the root directory again
         return $root . implode('/', $canonicalParts);
+    }
+
+    /**
+     * Collapse dot folder '.', '..', if possible
+     * @param $root
+     * @param $part
+     * @param $canonicalParts
+     */
+    protected static function collapseDotFolder($root, $part, &$canonicalParts)
+    {
+        if ('.' === $part) {
+            return;
+        }
+        // Collapse ".." with the previous part, if one exists
+        // Don't collapse ".." if the previous part is also ".."
+        if ('..' === $part && count($canonicalParts) > 0
+            && '..' !== $canonicalParts[count($canonicalParts) - 1]
+        ) {
+            array_pop($canonicalParts);
+            return;
+        }
+        // Only add ".." prefixes for relative paths
+        if ('..' !== $part || '' === $root) {
+            $canonicalParts[] = $part;
+        }
     }
 
     /**
@@ -514,25 +536,25 @@ class DirHelper
     private static function split($path)
     {
         if ('' === $path) {
-            return [ '', '' ];
+            return ['', ''];
         }
         $root = '';
         $length = strlen($path);
         // Remove and remember root directory
-        if ('/' === $path[ 0 ]) {
+        if ('/' === $path[0]) {
             $root = '/';
             $path = $length > 1 ? substr($path, 1) : '';
-        } elseif ($length > 1 && ctype_alpha($path[ 0 ]) && ':' === $path[ 1 ]) {
+        } elseif ($length > 1 && ctype_alpha($path[0]) && ':' === $path[1]) {
             if (2 === $length) {
                 // Windows special case: "C:"
                 $root = $path . '/';
                 $path = '';
-            } elseif ('/' === $path[ 2 ]) {
+            } elseif ('/' === $path[2]) {
                 // Windows normal case: "C:/"..
                 $root = substr($path, 0, 3);
                 $path = $length > 3 ? substr($path, 3) : '';
             }
         }
-        return [ $root, $path ];
+        return [$root, $path];
     }
 }
