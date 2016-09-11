@@ -3,6 +3,7 @@
 namespace Padosoft\Io\Test;
 
 use Padosoft\Io\DirHelper;
+use SebastianBergmann\CodeCoverage\Node\Directory;
 
 class DirHelperTest extends \PHPUnit_Framework_TestCase
 {
@@ -219,5 +220,70 @@ class DirHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists(__DIR__.'/resourcesNew/dummy.csv');
         //$this->assertFileNotExists(__DIR__.'/resourcesNew/subdir/dummy.txt');
         DirHelper::delete(__DIR__.'/resourcesNew');
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $canonicalized
+     * @dataProvider provideCanonicalizationTests
+     */
+    public function Canonicalize($path, $canonicalized)
+    {
+        $this->assertSame($canonicalized, DirHelper::canonicalize($path));
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $isAbsolute
+     * @dataProvider provideIsAbsolutePathTests
+     */
+    public function isAbsolute($path, $isAbsolute)
+    {
+        $this->assertSame($isAbsolute, DirHelper::isAbsolute($path));
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $isAbsolute
+     * @dataProvider provideIsAbsolutePathTests
+     */
+    public function isRelative($path, $isAbsolute)
+    {
+        $this->assertSame(!$isAbsolute, DirHelper::isRelative($path));
+    }
+    /**
+     * @test
+     * @param $path
+     * @param $isAbsolute
+     * @dataProvider provideIsAbsolutePathUnixTests
+     */
+    public function isAbsoluteUnix($path, $isAbsolute)
+    {
+        $this->assertSame($isAbsolute, DirHelper::isAbsoluteUnix($path));
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $isAbsolute
+     * @dataProvider provideIsAbsolutePathWindowsTests
+     */
+    public function isAbsoluteWindows($path, $isAbsolute)
+    {
+        $this->assertSame($isAbsolute, DirHelper::isAbsoluteWindows($path));
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $isLocal$isAbsolute
+     * @dataProvider provideIsLocalTests
+     */
+    public function isLocal($path, $isLocal)
+    {
+        $this->assertSame($isLocal, DirHelper::isLocal($path));
     }
 }

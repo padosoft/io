@@ -2,6 +2,27 @@
 
 All Notable changes to `io` will be documented in this file
 
+## 1.6.0 - 2016-09-11
+
+### ADD
+
+### DirHelper
+- isLocal
+- isAbsoluteWindows
+- isAbsoluteUnix
+- isAbsolute
+- isRelative
+- join
+- njoin
+- removeStartSlash
+- removeStartSlashToAllPaths
+- canonicalize
+- split
+
+### FileHelper
+- hasExtension
+- changeExtension
+
 ## 1.5.0 - 2016-09-07
 
 ### ADD

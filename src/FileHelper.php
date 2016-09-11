@@ -134,6 +134,76 @@ class FileHelper
     }
 
     /**
+     * Returns whether the path has an extension.
+     *
+     * @param string $path The path string
+     * @param string|array|null $extensions If null or not provided, checks if an
+     *                                       extension exists, otherwise checks for
+     *                                       the specified extension or array of extensions
+     *                                       (with or without leading dot)
+     * @param bool $ignoreCase Whether to ignore case-sensitivity
+     *                                       (Requires mbstring extension for correct
+     *                                       multi-byte character handling in extension)
+     *
+     * @return bool true if the path has an (or the specified) extension, otherwise false
+     *
+     * @see https://github.com/laradic/support/blob/master/src/Path.php
+     */
+    public static function hasExtension(string $path, $extensions = null, bool $ignoreCase = false) : bool
+    {
+        if ('' === $path) {
+            return false;
+        }
+        $actualExtension = self::getFilenameExtension($path);
+        if ($ignoreCase) {
+            $actualExtension  = self::toLower($actualExtension );
+        }
+        // Only check if path has any extension
+        if (null === $extensions) {
+            return !empty($actualExtension);
+        }
+        // Make an array of extensions
+        if (!is_array($extensions)) {
+            $extensions = [ $extensions ];
+        }
+        foreach ($extensions as $key => $extension) {
+            if ($ignoreCase) {
+                $extension = self::toLower($extension);
+            }
+            // remove leading '.' in extensions array
+            $extensions[ $key ] = ltrim($extension, '.');
+        }
+        return in_array($actualExtension, $extensions);
+    }
+    /**
+     * Changes the extension of a path string.
+     *
+     * @param string $path The path string with filename.ext to change
+     * @param string $extension New extension (with or without leading dot)
+     *
+     * @return string The path string with new file extension
+     *
+     * @see https://github.com/laradic/support/blob/master/src/Path.php
+     */
+    public static function changeExtension($path, $extension)
+    {
+        if ('' === $path) {
+            return '';
+        }
+        $actualExtension = self::getFilenameExtension($path);
+        $extension = ltrim($extension, '.');
+        // No extension for paths
+        if ('/' == substr($path, -1)) {
+            return $path;
+        }
+        // No actual extension in path
+        if (empty($actualExtension)) {
+            return $path . ('.' == substr($path, -1) ? '' : '.') . $extension;
+        }
+        return substr($path, 0, -strlen($actualExtension)) . $extension;
+    }
+
+    /**
      * unlink file if exists.
      * Return false if exists and unlink fails or if filePath is a dir.
      * @param string $filePath
@@ -321,5 +391,21 @@ class FileHelper
             return '';
         }
         return mime_content_type($fullPathFile);
+    }
+
+    /**
+     * Converts string to lower-case (multi-byte safe if mbstring is installed).
+     *
+     * @param string $str The string
+     *
+     * @return string Lower case string
+     * @see https://github.com/laradic/support/blob/master/src/Path.php
+     */
+    private static function toLower($str)
+    {
+        if (function_exists('mb_strtolower')) {
+            return mb_strtolower($str, mb_detect_encoding($str));
+        }
+        return strtolower($str);
     }
 }

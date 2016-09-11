@@ -238,6 +238,34 @@ class DirHelper
     }
 
     /**
+     * Remove start slash ('/') char in dir if starts with slash.
+     * @param $directory
+     * @return string
+     */
+    public static function removeStartSlash($directory) : string
+    {
+        if (self::startsWithSlash($directory)) {
+            $directory = substr($directory, 1);
+        }
+        return $directory;
+    }
+
+    /**
+     * For each dir passed in array, check if not started with '/' otherwise remove a slash to path.
+     * If not dir, leave the element untouched.
+     * @param array $paths
+     * @return array
+     */
+    public static function removeStartSlashToAllPaths(array $paths) : array
+    {
+        if (empty($paths)) {
+            return [];
+        }
+
+        return array_map('self::removeStartSlash', $paths);
+    }
+
+    /**
      * Dir::copy()
      * Copy a source directory (files and all subdirectories) to destination directory.
      * If Destination directory doesn't exists try to create it.
@@ -287,5 +315,224 @@ class DirHelper
         }
         closedir($directorySourceHandle);
         return true;
+    }
+
+    /**
+     * Returns whether the given path is on the local filesystem.
+     *
+     * @param string $path A path string
+     *
+     * @return boolean Returns true if the path is local, false for a URL
+     * @see https://github.com/laradic/support/blob/master/src/Path.php
+     */
+    public static function isLocal($path)
+    {
+        return is_string($path) && '' !== $path && false === strpos($path, '://');
+    }
+
+    /**
+     * Returns whether a path is absolute Unix path.
+     *
+     * @param string $path A path string
+     *
+     * @return boolean Returns true if the path is absolute unix path, false if it is
+     *                 relative or empty
+     */
+    public static function isAbsoluteUnix($path)
+    {
+        return '' !== $path && '/' === $path[ 0 ];
+    }
+
+    /**
+     * Returns whether a path is absolute Windows Path.
+     *
+     * @param string $path A path string
+     *
+     * @return boolean Returns true if the path is absolute, false if it is
+     *                 relative or empty
+     * @see https://github.com/laradic/support/blob/master/src/Path.php
+     */
+    public static function isAbsoluteWindows($path)
+    {
+        if ('' === $path) {
+            return false;
+        }
+        if ('\\' === $path[ 0 ]) {
+            return true;
+        }
+        // Windows root
+        if (strlen($path) > 1 && ctype_alpha($path[ 0 ]) && ':' === $path[ 1 ]) {
+            // Special case: "C:"
+            if (2 === strlen($path)) {
+                return true;
+            }
+            // Normal case: "C:/ or "C:\"
+            if ('/' === $path[ 2 ] || '\\' === $path[ 2 ]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether a path is absolute.
+     *
+     * @param string $path A path string
+     *
+     * @return boolean Returns true if the path is absolute, false if it is
+     *                 relative or empty
+     */
+    public static function isAbsolute($path)
+    {
+        return self::isAbsoluteUnix($path) || self::isAbsoluteWindows($path);
+    }
+
+    /**
+     * Returns whether a path is relative.
+     *
+     * @param string $path A path string
+     *
+     * @return boolean Returns true if the path is relative or empty, false if
+     *                 it is absolute
+     * @see https://github.com/laradic/support/blob/master/src/Path.php
+     */
+    public static function isRelative($path)
+    {
+        return !self::isAbsolute($path);
+    }
+
+    /**
+     * Joins a split file system path.
+     *
+     * @param  array|string $paths
+     *
+     * @return string
+     * @see https://github.com/laradic/support/blob/master/src/Path.php
+     */
+    public static function join(...$paths) : string
+    {
+        foreach ($paths as $key => &$argument) {
+            if (is_array($argument)) {
+                $argument = self::join($argument);
+            }
+            $argument = self::removeFinalSlash($argument);
+            if ($key > 0) {
+                $argument = self::removeStartSlash($argument);
+            }
+            $paths[ $key ] = $argument;
+        }
+        return implode(DIRECTORY_SEPARATOR, $paths);
+    }
+    /**
+     * Similar to the join() method, but also normalize()'s the result
+     *
+     * @param string|array ...$paths
+     *
+     * @return string
+     * @see https://github.com/laradic/support/blob/master/src/Path.php
+     */
+    public static function njoin(...$paths) : string
+    {
+        return self::canonicalize(self::join($paths));
+    }
+
+    /**
+     * Canonicalizes the given path.
+     *
+     * During normalization, all slashes are replaced by forward slashes ("/").
+     * Furthermore, all "." and ".." segments are removed as far as possible.
+     * ".." segments at the beginning of relative paths are not removed.
+     *
+     * ```php
+     * echo DirHelper::canonicalize("\webmozart\puli\..\css\style.css");
+     * // => /webmozart/style.css
+     *
+     * echo DirHelper::canonicalize("../css/./style.css");
+     * // => ../css/style.css
+     * ```
+     *
+     * This method is able to deal with both UNIX and Windows paths.
+     *
+     * @param string $path A path string
+     *
+     * @return string The canonical path
+     * @see https://github.com/laradic/support/blob/master/src/Path.php
+     */
+    public static function canonicalize($path)
+    {
+        $path = (string)$path;
+        if ('' === $path) {
+            return '';
+        }
+        $path = str_replace('\\', '/', $path);
+        list ($root, $path) = self::split($path);
+        $parts = array_filter(explode('/', $path), 'strlen');
+        $canonicalParts = [ ];
+        // Collapse "." and "..", if possible
+        foreach ($parts as $part) {
+            if ('.' === $part) {
+                continue;
+            }
+            // Collapse ".." with the previous part, if one exists
+            // Don't collapse ".." if the previous part is also ".."
+            if ('..' === $part && count($canonicalParts) > 0
+                && '..' !== $canonicalParts[ count($canonicalParts) - 1 ]
+            ) {
+                array_pop($canonicalParts);
+                continue;
+            }
+            // Only add ".." prefixes for relative paths
+            if ('..' !== $part || '' === $root) {
+                $canonicalParts[] = $part;
+            }
+        }
+        // Add the root directory again
+        return $root . implode('/', $canonicalParts);
+    }
+
+    /**
+     * Splits a part into its root directory and the remainder.
+     *
+     * If the path has no root directory, an empty root directory will be
+     * returned.
+     *
+     * If the root directory is a Windows style partition, the resulting root
+     * will always contain a trailing slash.
+     *
+     * list ($root, $path) = DirHelpersplit("C:/webmozart")
+     * // => array("C:/", "webmozart")
+     *
+     * list ($root, $path) = DirHelpersplit("C:")
+     * // => array("C:/", "")
+     *
+     * @param string $path The canonical path to split
+     *
+     * @return array An array with the root directory and the remaining relative
+     *               path
+     * @see https://github.com/laradic/support/blob/master/src/Path.php
+     */
+    private static function split($path)
+    {
+        if ('' === $path) {
+            return [ '', '' ];
+        }
+        $root = '';
+        $length = strlen($path);
+        // Remove and remember root directory
+        if ('/' === $path[ 0 ]) {
+            $root = '/';
+            $path = $length > 1 ? substr($path, 1) : '';
+        } elseif ($length > 1 && ctype_alpha($path[ 0 ]) && ':' === $path[ 1 ]) {
+            if (2 === $length) {
+                // Windows special case: "C:"
+                $root = $path . '/';
+                $path = '';
+            } elseif ('/' === $path[ 2 ]) {
+                // Windows normal case: "C:/"..
+                $root = substr($path, 0, 3);
+                $path = $length > 3 ? substr($path, 3) : '';
+            }
+        }
+        return [ $root, $path ];
     }
 }

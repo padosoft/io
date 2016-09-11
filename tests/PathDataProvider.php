@@ -456,5 +456,220 @@ trait PathDataProvider
         }
         */
     }
+    public function provideCanonicalizationTests()
+    {
+        return array(
+            // relative paths (forward slash)
+            array('css/./style.css', 'css/style.css'),
+            array('css/../style.css', 'style.css'),
+            array('css/./../style.css', 'style.css'),
+            array('css/.././style.css', 'style.css'),
+            array('css/../../style.css', '../style.css'),
+            array('./css/style.css', 'css/style.css'),
+            array('../css/style.css', '../css/style.css'),
+            array('./../css/style.css', '../css/style.css'),
+            array('.././css/style.css', '../css/style.css'),
+            array('../../css/style.css', '../../css/style.css'),
+            array('', ''),
+            array(null, ''),
+            array('.', ''),
+            array('..', '..'),
+            array('./..', '..'),
+            array('../.', '..'),
+            array('../..', '../..'),
+            // relative paths (backslash)
+            array('css\\.\\style.css', 'css/style.css'),
+            array('css\\..\\style.css', 'style.css'),
+            array('css\\.\\..\\style.css', 'style.css'),
+            array('css\\..\\.\\style.css', 'style.css'),
+            array('css\\..\\..\\style.css', '../style.css'),
+            array('.\\css\\style.css', 'css/style.css'),
+            array('..\\css\\style.css', '../css/style.css'),
+            array('.\\..\\css\\style.css', '../css/style.css'),
+            array('..\\.\\css\\style.css', '../css/style.css'),
+            array('..\\..\\css\\style.css', '../../css/style.css'),
+            // absolute paths (forward slash, UNIX)
+            array('/css/style.css', '/css/style.css'),
+            array('/css/./style.css', '/css/style.css'),
+            array('/css/../style.css', '/style.css'),
+            array('/css/./../style.css', '/style.css'),
+            array('/css/.././style.css', '/style.css'),
+            array('/./css/style.css', '/css/style.css'),
+            array('/../css/style.css', '/css/style.css'),
+            array('/./../css/style.css', '/css/style.css'),
+            array('/.././css/style.css', '/css/style.css'),
+            array('/../../css/style.css', '/css/style.css'),
+            // absolute paths (backslash, UNIX)
+            array('\\css\\style.css', '/css/style.css'),
+            array('\\css\\.\\style.css', '/css/style.css'),
+            array('\\css\\..\\style.css', '/style.css'),
+            array('\\css\\.\\..\\style.css', '/style.css'),
+            array('\\css\\..\\.\\style.css', '/style.css'),
+            array('\\.\\css\\style.css', '/css/style.css'),
+            array('\\..\\css\\style.css', '/css/style.css'),
+            array('\\.\\..\\css\\style.css', '/css/style.css'),
+            array('\\..\\.\\css\\style.css', '/css/style.css'),
+            array('\\..\\..\\css\\style.css', '/css/style.css'),
+            // absolute paths (forward slash, Windows)
+            array('C:/css/style.css', 'C:/css/style.css'),
+            array('C:/css/./style.css', 'C:/css/style.css'),
+            array('C:/css/../style.css', 'C:/style.css'),
+            array('C:/css/./../style.css', 'C:/style.css'),
+            array('C:/css/.././style.css', 'C:/style.css'),
+            array('C:/./css/style.css', 'C:/css/style.css'),
+            array('C:/../css/style.css', 'C:/css/style.css'),
+            array('C:/./../css/style.css', 'C:/css/style.css'),
+            array('C:/.././css/style.css', 'C:/css/style.css'),
+            array('C:/../../css/style.css', 'C:/css/style.css'),
+            // absolute paths (backslash, Windows)
+            array('C:\\css\\style.css', 'C:/css/style.css'),
+            array('C:\\css\\.\\style.css', 'C:/css/style.css'),
+            array('C:\\css\\..\\style.css', 'C:/style.css'),
+            array('C:\\css\\.\\..\\style.css', 'C:/style.css'),
+            array('C:\\css\\..\\.\\style.css', 'C:/style.css'),
+            array('C:\\.\\css\\style.css', 'C:/css/style.css'),
+            array('C:\\..\\css\\style.css', 'C:/css/style.css'),
+            array('C:\\.\\..\\css\\style.css', 'C:/css/style.css'),
+            array('C:\\..\\.\\css\\style.css', 'C:/css/style.css'),
+            array('C:\\..\\..\\css\\style.css', 'C:/css/style.css'),
+            // Windows special case
+            array('C:', 'C:/'),
+            // Don't change malformed path
+            array('C:css/style.css', 'C:css/style.css'),
+        );
+    }
 
+    public function provideHasExtensionTests()
+    {
+        $tests = array(
+            array(true, '/webmozart/puli/style.css.twig', null, false),
+            array(true, '/webmozart/puli/style.css', null, false),
+            array(false, '/webmozart/puli/style.css.', null, false),
+            array(false, '/webmozart/puli/', null, false),
+            array(false, '/webmozart/puli', null, false),
+            array(false, '/', null, false),
+            array(false, '', null, false),
+            array(true, '/webmozart/puli/style.css.twig', 'twig', false),
+            array(false, '/webmozart/puli/style.css.twig', 'css', false),
+            array(true, '/webmozart/puli/style.css', 'css', false),
+            array(true, '/webmozart/puli/style.css', '.css', false),
+            array(true, '/webmozart/puli/style.css.', '', false),
+            array(false, '/webmozart/puli/', 'ext', false),
+            array(false, '/webmozart/puli', 'ext', false),
+            array(false, '/', 'ext', false),
+            array(false, '', 'ext', false),
+            array(false, '/webmozart/puli/style.css', 'CSS', false),
+            array(true, '/webmozart/puli/style.css', 'CSS', true),
+            array(false, '/webmozart/puli/style.CSS', 'css', false),
+            array(true, '/webmozart/puli/style.CSS', 'css', true),
+            array(true, '/webmozart/puli/style.ÄÖÜ', 'ÄÖÜ', false),
+            array(true, '/webmozart/puli/style.css', array('ext', 'css'), false),
+            array(true, '/webmozart/puli/style.css', array('.ext', '.css'), false),
+            array(true, '/webmozart/puli/style.css.', array('ext', ''), false),
+            array(false, '/webmozart/puli/style.css', array('foo', 'bar', ''), false),
+            array(false, '/webmozart/puli/style.css', array('.foo', '.bar', ''), false),
+        );
+        if (extension_loaded('mbstring')) {
+            // This can only be tested, when mbstring is installed
+            $tests[] = array(true, '/webmozart/puli/style.ÄÖÜ', 'äöü', true);
+            $tests[] = array(true, '/webmozart/puli/style.ÄÖÜ', array('äöü'), true);
+        }
+        return $tests;
+    }
+
+    public function provideChangeExtensionTests()
+    {
+        return array(
+            array('/webmozart/puli/style.css.twig', 'html', '/webmozart/puli/style.css.html'),
+            array('/webmozart/puli/style.css', 'sass', '/webmozart/puli/style.sass'),
+            array('/webmozart/puli/style.css', '.sass', '/webmozart/puli/style.sass'),
+            array('/webmozart/puli/style.css', '', '/webmozart/puli/style.'),
+            array('/webmozart/puli/style.css.', 'twig', '/webmozart/puli/style.css.twig'),
+            array('/webmozart/puli/style.css.', '', '/webmozart/puli/style.css.'),
+            array('/webmozart/puli/style.css', 'äöü', '/webmozart/puli/style.äöü'),
+            array('/webmozart/puli/style.äöü', 'css', '/webmozart/puli/style.css'),
+            array('/webmozart/puli/', 'css', '/webmozart/puli/'),
+            array('/webmozart/puli', 'css', '/webmozart/puli.css'),
+            array('/', 'css', '/'),
+            array('', 'css', ''),
+        );
+    }
+
+    public function provideIsAbsolutePathTests()
+    {
+        return array(
+            array('/css/style.css', true),
+            array('/', true),
+            array('css/style.css', false),
+            array('', false),
+            array(null, false),
+            array('\\css\\style.css', true),
+            array('\\', true),
+            array('css\\style.css', false),
+            array('C:/css/style.css', true),
+            array('D:/', true),
+            array('E:\\css\\style.css', true),
+            array('F:\\', true),
+            // Windows special case
+            array('C:', true),
+            // Not considered absolute
+            array('C:css/style.css', false),
+        );
+    }
+
+    public function provideIsAbsolutePathUnixTests()
+    {
+        return array(
+            array('/css/style.css', true),
+            array('/', true),
+            array('css/style.css', false),
+            array('', false),
+            array(null, false),
+            array('\\css\\style.css', false),
+            array('\\', false),
+            array('css\\style.css', false),
+            array('C:/css/style.css', false),
+            array('D:/', false),
+            array('E:\\css\\style.css', false),
+            array('F:\\', false),
+            // Windows special case
+            array('C:', false),
+            // Not considered absolute
+            array('C:css/style.css', false),
+        );
+    }
+
+    public function provideIsAbsolutePathWindowsTests()
+    {
+        return array(
+            array('/css/style.css', false),
+            array('/', false),
+            array('css/style.css', false),
+            array('', false),
+            array(null, false),
+            array('\\css\\style.css', true),
+            array('\\', true),
+            array('css\\style.css', false),
+            array('C:/css/style.css', true),
+            array('D:/', true),
+            array('E:\\css\\style.css', true),
+            array('F:\\', true),
+            // Windows special case
+            array('C:', true),
+            // Not considered absolute
+            array('C:css/style.css', false),
+        );
+    }
+
+    public function provideIsLocalTests()
+    {
+        return array(
+            array('/bg.png', true),
+            array('bg.png', true),
+            array('http://example.com/bg.png', false),
+            array('http://example.com', false),
+            array(null, false),
+            array('', false),
+        );
+    }
 }

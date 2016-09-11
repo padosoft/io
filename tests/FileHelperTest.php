@@ -2,7 +2,9 @@
 
 namespace Padosoft\Io\Test;
 
+use Padosoft\Io\DirHelper;
 use Padosoft\Io\FileHelper;
+use phpDocumentor\Reflection\File;
 
 class FileHelperTest extends \PHPUnit_Framework_TestCase
 {
@@ -208,5 +210,32 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->assertEquals($expected, FileHelper::getFilenameExtension($path));
         }
+    }
+
+    /**
+     * @test
+     * @param $hasExtension
+     * @param $path
+     * @param $extension
+     * @param $ignoreCase
+     * @dataProvider provideHasExtensionTests
+     */
+    public function hasExtension($hasExtension, $path, $extension, $ignoreCase)
+    {
+        $this->assertSame($hasExtension, FileHelper::hasExtension($path, $extension, $ignoreCase));
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $extension
+     * @param $pathExpected
+     * @dataProvider provideChangeExtensionTests
+     */
+    public function changeExtension($path, $extension, $pathExpected)
+    {
+        static $call = 0;
+        $this->assertSame($pathExpected, FileHelper::changeExtension($path, $extension));
+        $call++;
     }
 }
