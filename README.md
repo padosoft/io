@@ -68,7 +68,58 @@ if(LogHelper::ftruncatestart('log.csv', 2000)){
 
 ```
 
-For all helpers see classes.
+## List of functions
+
+### DirHelper
+
+- isDirSafe
+- checkDirExistOrCreate
+- addFinalSlash
+- addFinalSlashToAllPaths
+- endsWithSlash
+- endsWithStar
+- endsWith
+- startsWithSlash
+- startsWith
+- findDirs
+- delete
+- removeFinalSlash
+- removeFinalSlashToAllPaths
+- removeStartSlash
+- removeStartSlashToAllPaths
+- copy
+- isLocal
+- isAbsoluteUnix
+- isAbsoluteWindows
+- isAbsoluteWindowsRoot
+- isAbsolute
+- isRelative
+- join
+- njoin
+- canonicalize
+
+### FileHelper
+
+- arrMimeType
+- getPathinfoPart
+- getDirname
+- getFilename
+- getFilenameWithoutExtension
+- getFilenameExtension
+- hasExtension
+- variable2Array
+- changeExtension
+- unlinkSafe
+- fileExistsSafe
+- findFiles
+- filePutContentsSafe
+- getMimeType
+- getMimeTypeByFinfo
+- getMimeTypeByMimeContentType
+
+### LogHelper
+
+- ftruncatestart
 
 ## Change log
 
