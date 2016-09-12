@@ -286,4 +286,39 @@ class DirHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($isLocal, DirHelper::isLocal($path));
     }
+
+    /**
+     * @test
+     * @param $paths
+     * @param $expected
+     * @dataProvider provideJoinArrayTests
+     */
+    public function JoinArray($paths, $expected)
+    {
+        $this->assertSame($expected, DirHelper::join($paths));
+    }
+
+    /**
+     * @test
+     * @param $path1
+     * @param $path2
+     * @param $expected
+     * @dataProvider provideJoinTests
+     */
+    public function Join($path1, $path2, $expected)
+    {
+        $this->assertSame($expected, DirHelper::join($path1, $path2));
+    }
+
+    /**
+     * @test
+     * @param $path1
+     * @param $path2
+     * @param $expected
+     * @dataProvider provideNjoinTests
+     */
+    public function Njoin($path1, $path2, $expected)
+    {
+        $this->assertSame($expected, DirHelper::njoin($path1, $path2));
+    }
 }

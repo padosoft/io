@@ -2,6 +2,11 @@
 
 All Notable changes to `io` will be documented in this file
 
+# 1.6.1 - 2016-09-12
+
+### FIX
+- FIX bug in join.
+
 ## 1.6.0 - 2016-09-11
 
 ### ADD

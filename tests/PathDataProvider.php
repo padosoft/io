@@ -44,12 +44,24 @@ trait PathDataProvider
             '\'\'' => ['', ['DirHelper.php', 'FileHelper.php', 'LogHelper.php']],
             'null' => [null, 'TypeError'],
             __DIR__ . '/pippo.txt' => [__DIR__ . '/pippo.txt', []],
-            __DIR__ . '/resources/dummy.txt' => [__DIR__ . '/resources/dummy.txt', ['resources/dummy.txt','resources/subdir/dummy.txt']],
-            __DIR__ . '/resources/dummy.*' => [__DIR__ . '/resources/dummy.*', ['resources/dummy.csv', 'resources/dummy.txt','resources/subdir/dummy.txt']],
+            __DIR__ . '/resources/dummy.txt' => [
+                __DIR__ . '/resources/dummy.txt',
+                ['resources/dummy.txt', 'resources/subdir/dummy.txt']
+            ],
+            __DIR__ . '/resources/dummy.*' => [
+                __DIR__ . '/resources/dummy.*',
+                ['resources/dummy.csv', 'resources/dummy.txt', 'resources/subdir/dummy.txt']
+            ],
             __DIR__ . '/resources' => [__DIR__ . '/resources', []],
-            __DIR__ . '/resources/' => [__DIR__ . '/resources/', ['resources/dummy.csv', 'resources/dummy.txt','resources/subdir/dummy.txt']],
-            __DIR__ . '/resources/*' => [__DIR__ . '/resources/*', ['resources/dummy.csv', 'resources/dummy.txt','resources/subdir/dummy.txt']],
-            __DIR__ . '/../tests/*' => [__DIR__.'/../tests/*', ['1', '2', '3', '4', '5', '6', '7']],
+            __DIR__ . '/resources/' => [
+                __DIR__ . '/resources/',
+                ['resources/dummy.csv', 'resources/dummy.txt', 'resources/subdir/dummy.txt']
+            ],
+            __DIR__ . '/resources/*' => [
+                __DIR__ . '/resources/*',
+                ['resources/dummy.csv', 'resources/dummy.txt', 'resources/subdir/dummy.txt']
+            ],
+            __DIR__ . '/../tests/*' => [__DIR__ . '/../tests/*', ['1', '2', '3', '4', '5', '6', '7']],
         ];
     }
 
@@ -84,8 +96,18 @@ trait PathDataProvider
             'null, true, 0755' => [null, true, '0755', 'TypeError'],
             __DIR__ . '/resources/dummy.txt, true, 0755' => [__DIR__ . '/resources/dummy.txt', true, '0755', true],
             __DIR__ . '/resources/dummy.txt, false, 0755' => [__DIR__ . '/resources/dummy.txt', false, '0755', true],
-            __DIR__ . '/resources/new/dummy.txt, false, 0755' => [__DIR__ . '/resources/new/dummy.txt', false, '0755', false],
-            __DIR__ . '/resources/new/dummy.txt, true, 0755' => [__DIR__ . '/resources/new/dummy.txt', true, '0755', true],
+            __DIR__ . '/resources/new/dummy.txt, false, 0755' => [
+                __DIR__ . '/resources/new/dummy.txt',
+                false,
+                '0755',
+                false
+            ],
+            __DIR__ . '/resources/new/dummy.txt, true, 0755' => [
+                __DIR__ . '/resources/new/dummy.txt',
+                true,
+                '0755',
+                true
+            ],
             __DIR__ . '/resources/, false, 0755' => [__DIR__ . '/resources/', false, '0755', false],
             __DIR__ . '/resources/, true, 0755' => [__DIR__ . '/resources/', true, '0755', false],
             __DIR__ . '/resources/new2/, false, 0755' => [__DIR__ . '/resources/new2/', false, '0755', false],
@@ -253,10 +275,26 @@ trait PathDataProvider
             __DIR__ . '/pippo.txt, PATHINFO_BASENAME' => [__DIR__ . '/pippo.txt', PATHINFO_BASENAME, 'pippo.txt'],
             __DIR__ . '/pippo.txt, PATHINFO_EXTENSION' => [__DIR__ . '/pippo.txt', PATHINFO_EXTENSION, 'txt'],
             __DIR__ . '/pippo.txt, PATHINFO_FILENAME' => [__DIR__ . '/pippo.txt', PATHINFO_FILENAME, 'pippo'],
-            __DIR__ . '/../vendor/autoload.php, PATHINFO_DIRNAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_DIRNAME, __DIR__.'/../vendor'],
-            __DIR__ . '/../vendor/autoload.php, PATHINFO_BASENAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_BASENAME, 'autoload.php'],
-            __DIR__ . '/../vendor/autoload.php, PATHINFO_EXTENSION' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_EXTENSION, 'php'],
-            __DIR__ . '/../vendor/autoload.php, PATHINFO_FILENAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_FILENAME, 'autoload'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_DIRNAME' => [
+                __DIR__ . '/../vendor/autoload.php',
+                PATHINFO_DIRNAME,
+                __DIR__ . '/../vendor'
+            ],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_BASENAME' => [
+                __DIR__ . '/../vendor/autoload.php',
+                PATHINFO_BASENAME,
+                'autoload.php'
+            ],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_EXTENSION' => [
+                __DIR__ . '/../vendor/autoload.php',
+                PATHINFO_EXTENSION,
+                'php'
+            ],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_FILENAME' => [
+                __DIR__ . '/../vendor/autoload.php',
+                PATHINFO_FILENAME,
+                'autoload'
+            ],
             '/var/www/vhosts/, PATHINFO_DIRNAME' => ['/var/www/vhosts/', PATHINFO_DIRNAME, ''],
             '/var/www/vhosts/, PATHINFO_BASENAME' => ['/var/www/vhosts/', PATHINFO_BASENAME, ''],
             '/var/www/vhosts/, PATHINFO_EXTENSION' => ['/var/www/vhosts/', PATHINFO_EXTENSION, ''],
@@ -289,7 +327,11 @@ trait PathDataProvider
             '\'\', PATHINFO_EXTENSION' => ['', PATHINFO_EXTENSION, ''],
             'null, PATHINFO_EXTENSION' => [null, PATHINFO_EXTENSION, 'TypeError'],
             __DIR__ . '/pippo.txt, PATHINFO_EXTENSION' => [__DIR__ . '/pippo.txt', PATHINFO_EXTENSION, 'txt'],
-            __DIR__ . '/../vendor/autoload.php, PATHINFO_EXTENSION' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_EXTENSION, 'php'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_EXTENSION' => [
+                __DIR__ . '/../vendor/autoload.php',
+                PATHINFO_EXTENSION,
+                'php'
+            ],
             '/var/www/vhosts/, PATHINFO_EXTENSION' => ['/var/www/vhosts/', PATHINFO_EXTENSION, ''],
             '/var/www/vhosts, PATHINFO_EXTENSION' => ['/var/www/vhosts', PATHINFO_EXTENSION, ''],
             'vhosts, PATHINFO_EXTENSION' => ['vhosts', PATHINFO_EXTENSION, ''],
@@ -307,7 +349,11 @@ trait PathDataProvider
             '\'\', PATHINFO_FILENAME' => ['', PATHINFO_FILENAME, ''],
             'null, PATHINFO_FILENAME' => [null, PATHINFO_FILENAME, 'TypeError'],
             __DIR__ . '/pippo.txt, PATHINFO_FILENAME' => [__DIR__ . '/pippo.txt', PATHINFO_FILENAME, 'pippo'],
-            __DIR__ . '/../vendor/autoload.php, PATHINFO_FILENAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_FILENAME, 'autoload'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_FILENAME' => [
+                __DIR__ . '/../vendor/autoload.php',
+                PATHINFO_FILENAME,
+                'autoload'
+            ],
             '/var/www/vhosts/, PATHINFO_FILENAME' => ['/var/www/vhosts/', PATHINFO_FILENAME, ''],
             '/var/www/vhosts, PATHINFO_FILENAME' => ['/var/www/vhosts', PATHINFO_FILENAME, 'vhosts'],
             'vhosts, PATHINFO_FILENAME' => ['vhosts', PATHINFO_FILENAME, 'vhosts'],
@@ -325,7 +371,11 @@ trait PathDataProvider
             '\'\', PATHINFO_BASENAME' => ['', PATHINFO_BASENAME, ''],
             'null, PATHINFO_BASENAME' => [null, PATHINFO_BASENAME, 'TypeError'],
             __DIR__ . '/pippo.txt, PATHINFO_BASENAME' => [__DIR__ . '/pippo.txt', PATHINFO_BASENAME, 'pippo.txt'],
-            __DIR__ . '/../vendor/autoload.php, PATHINFO_BASENAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_BASENAME, 'autoload.php'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_BASENAME' => [
+                __DIR__ . '/../vendor/autoload.php',
+                PATHINFO_BASENAME,
+                'autoload.php'
+            ],
             '/var/www/vhosts/, PATHINFO_BASENAME' => ['/var/www/vhosts/', PATHINFO_BASENAME, ''],
             '/var/www/vhosts, PATHINFO_BASENAME' => ['/var/www/vhosts', PATHINFO_BASENAME, 'vhosts'],
             'vhosts, PATHINFO_BASENAME' => ['vhosts', PATHINFO_BASENAME, 'vhosts'],
@@ -343,7 +393,11 @@ trait PathDataProvider
             '\'\', PATHINFO_DIRNAME' => ['', PATHINFO_DIRNAME, ''],
             'null, PATHINFO_DIRNAME' => [null, PATHINFO_DIRNAME, 'TypeError'],
             __DIR__ . '/pippo.txt, PATHINFO_DIRNAME' => [__DIR__ . '/pippo.txt', PATHINFO_DIRNAME, __DIR__],
-            __DIR__ . '/../vendor/autoload.php, PATHINFO_DIRNAME' => [__DIR__ . '/../vendor/autoload.php', PATHINFO_DIRNAME, __DIR__.'/../vendor'],
+            __DIR__ . '/../vendor/autoload.php, PATHINFO_DIRNAME' => [
+                __DIR__ . '/../vendor/autoload.php',
+                PATHINFO_DIRNAME,
+                __DIR__ . '/../vendor'
+            ],
             '/var/www/vhosts/, PATHINFO_DIRNAME' => ['/var/www/vhosts/', PATHINFO_DIRNAME, ''],
             '/var/www/vhosts, PATHINFO_DIRNAME' => ['/var/www/vhosts', PATHINFO_DIRNAME, '/var/www'],
             'vhosts, PATHINFO_DIRNAME' => ['vhosts', PATHINFO_DIRNAME, ''],
@@ -456,6 +510,7 @@ trait PathDataProvider
         }
         */
     }
+
     public function provideCanonicalizationTests()
     {
         return array(
@@ -670,6 +725,46 @@ trait PathDataProvider
             array('http://example.com', false),
             array(null, false),
             array('', false),
+        );
+    }
+
+    public function provideJoinArrayTests()
+    {
+        return array(
+            array(['/var/www/', '/bg.png'], '/var/www' . DIRECTORY_SEPARATOR . 'bg.png'),
+            array(['/var/www/', 'bg.png'], '/var/www' . DIRECTORY_SEPARATOR . 'bg.png'),
+            array(['/var/www/', '/upload'], '/var/www' . DIRECTORY_SEPARATOR . 'upload'),
+            array(['/var/www', '/upload'], '/var/www' . DIRECTORY_SEPARATOR . 'upload'),
+            array(['/var/www/', '/upload/'], '/var/www' . DIRECTORY_SEPARATOR . 'upload'),
+            array(['/var/www', '/upload/'], '/var/www' . DIRECTORY_SEPARATOR . 'upload'),
+            array(['', ''], DIRECTORY_SEPARATOR),
+            array([''], ''),
+        );
+    }
+
+    public function provideJoinTests()
+    {
+        return array(
+            array('/var/www/', '/bg.png', '/var/www' . DIRECTORY_SEPARATOR . 'bg.png'),
+            array('/var/www/', 'bg.png', '/var/www' . DIRECTORY_SEPARATOR . 'bg.png'),
+            array('/var/www/', '/upload', '/var/www' . DIRECTORY_SEPARATOR . 'upload'),
+            array('/var/www', '/upload', '/var/www' . DIRECTORY_SEPARATOR . 'upload'),
+            array('/var/www/', '/upload/', '/var/www' . DIRECTORY_SEPARATOR . 'upload'),
+            array('/var/www', '/upload/', '/var/www' . DIRECTORY_SEPARATOR . 'upload'),
+            array('', '', DIRECTORY_SEPARATOR),
+        );
+    }
+
+    public function provideNjoinTests()
+    {
+        return array(
+            array('/var/www/', '/bg.png', '/var/www/bg.png'),
+            array('/var/www/', 'bg.png', '/var/www/bg.png'),
+            array('/var/www/', '/upload', '/var/www/upload'),
+            array('/var/www', '/upload', '/var/www/upload'),
+            array('/var/www/', '/upload/', '/var/www/upload'),
+            array('/var/www', '/upload/', '/var/www/upload'),
+            array('', '', '/'),
         );
     }
 }

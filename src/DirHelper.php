@@ -419,8 +419,12 @@ class DirHelper
      * @return string
      * @see https://github.com/laradic/support/blob/master/src/Path.php
      */
-    public static function join(...$paths) : string
+    public static function join($paths) : string
     {
+        $paths = func_get_args();
+        if (func_num_args() === 1 && is_array($paths[ 0 ])) {
+            $paths = $paths[ 0 ];
+        }
         foreach ($paths as $key => &$argument) {
             if (is_array($argument)) {
                 $argument = self::join($argument);
@@ -429,7 +433,7 @@ class DirHelper
             if ($key > 0) {
                 $argument = self::removeStartSlash($argument);
             }
-            $paths[$key] = $argument;
+            #$paths[$key] = $argument;
         }
         return implode(DIRECTORY_SEPARATOR, $paths);
     }
