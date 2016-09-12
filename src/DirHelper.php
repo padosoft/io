@@ -239,7 +239,7 @@ class DirHelper
 
     /**
      * Remove start slash ('/') char in dir if starts with slash.
-     * @param $directory
+     * @param string $directory
      * @return string
      */
     public static function removeStartSlash($directory) : string
@@ -366,7 +366,7 @@ class DirHelper
 
     /**
      * Check if win special drive C: or Normal win drive C:/  C:\
-     * @param $path
+     * @param string $path
      * @return bool
      */
     protected static function isAbsoluteWindowsRoot($path):bool
@@ -422,8 +422,8 @@ class DirHelper
     public static function join() : string
     {
         $paths = func_get_args();
-        if (func_num_args() === 1 && is_array($paths[ 0 ])) {
-            $paths = $paths[ 0 ];
+        if (func_num_args() === 1 && is_array($paths[0])) {
+            $paths = $paths[0];
         }
         foreach ($paths as $key => &$argument) {
             if (is_array($argument)) {
@@ -492,7 +492,7 @@ class DirHelper
 
     /**
      * Collapse dot folder '.', '..', if possible
-     * @param $root
+     * @param string $root
      * @param $part
      * @param $canonicalParts
      */
@@ -532,7 +532,7 @@ class DirHelper
      *
      * @param string $path The canonical path to split
      *
-     * @return array An array with the root directory and the remaining relative
+     * @return string[] An array with the root directory and the remaining relative
      *               path
      * @see https://github.com/laradic/support/blob/master/src/Path.php
      */
