@@ -414,12 +414,12 @@ class DirHelper
     /**
      * Joins a split file system path.
      *
-     * @param  array|string $paths
+     * @param  array|string
      *
      * @return string
      * @see https://github.com/laradic/support/blob/master/src/Path.php
      */
-    public static function join($paths) : string
+    public static function join() : string
     {
         $paths = func_get_args();
         if (func_num_args() === 1 && is_array($paths[ 0 ])) {
@@ -433,7 +433,6 @@ class DirHelper
             if ($key > 0) {
                 $argument = self::removeStartSlash($argument);
             }
-            #$paths[$key] = $argument;
         }
         return implode(DIRECTORY_SEPARATOR, $paths);
     }
@@ -441,14 +440,14 @@ class DirHelper
     /**
      * Similar to the join() method, but also normalize()'s the result
      *
-     * @param string|array ...$paths
+     * @param string|array
      *
      * @return string
      * @see https://github.com/laradic/support/blob/master/src/Path.php
      */
-    public static function njoin(...$paths) : string
+    public static function njoin() : string
     {
-        return self::canonicalize(self::join($paths));
+        return self::canonicalize(self::join(func_get_args()));
     }
 
     /**
