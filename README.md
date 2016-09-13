@@ -1,4 +1,4 @@
-# Simple agnostic package for IO releted (files, dir, etc..)
+# Simple agnostic package for IO related (files, dir, etc..)
 
 ![Agnostic](https://img.shields.io/badge/php-agnostic-blue.svg?style=flat-square)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/padosoft/io.svg?style=flat-square)](https://packagist.org/packages/padosoft/io)
