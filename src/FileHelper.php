@@ -422,4 +422,15 @@ class FileHelper
         }
         return strtolower($str);
     }
+
+    /**
+     * Check if $path is a file and is readable.
+     * Return false if you pass a dir.
+     * @param string $path
+     * @return bool
+     */
+    public static function isReadable(string $path):bool
+    {
+        return self::fileExistsSafe($path) && is_readable($path);
+    }
 }

@@ -6,6 +6,9 @@ All Notable changes to `io` will be documented in this file
 
 ### ADD
 - isDirEmpty
+- isDotDir
+- DirHelper::isReadable
+- FileHelper::isReadable
 
 # 1.6.1 - 2016-09-12
 

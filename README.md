@@ -97,7 +97,9 @@ if(LogHelper::ftruncatestart('log.csv', 2000)){
 - join
 - njoin
 - canonicalize
-- isDirEmpty
+- isDirEmpty : Check if a directory is empty in efficent way. Check hidden files too.
+- isDotDir : Check if an antry is linux dot dir (i.e.: . or .. )
+- isReadable : Check if a path is a dir and is readable.
 
 ### FileHelper
 
@@ -117,6 +119,7 @@ if(LogHelper::ftruncatestart('log.csv', 2000)){
 - getMimeType
 - getMimeTypeByFinfo
 - getMimeTypeByMimeContentType
+- isReadable : Check if a path is a file and is readable.
 
 ### LogHelper
 

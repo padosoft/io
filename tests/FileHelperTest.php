@@ -238,4 +238,20 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($pathExpected, FileHelper::changeExtension($path, $extension));
         $call++;
     }
+
+    /**
+     * @test
+     * @param $path
+     * @param $expected
+     * @dataProvider provideisReadableFileTests
+     */
+    public function isReadable($path, $expected)
+    {
+        if ($this->expectedIsAnException($expected)) {
+            $this->expectException($expected);
+            FileHelper::isReadable($path);
+        } else {
+            $this->assertSame($expected, FileHelper::isReadable($path));
+        }
+    }
 }

@@ -570,19 +570,40 @@ class DirHelper
     public static function isDirEmpty(string $path) : bool
     {
         //che if no such dir, not a dir, not readable
-        if (!self::isDirSafe($path) || !is_readable($path)) {
+        if (!self::isReadable($path)) {
             return false;
         }
 
         $result = true;
         $handle = opendir($path);
         while (false !== ($entry = readdir($handle))) {
-            if ($entry != "." && $entry != "..") {
+            if (!self::isDotDir($entry)) {
                 $result = false;
                 break;
             }
         }
         closedir($handle);
         return $result;
+    }
+
+    /**
+     * Check if an antry is linux dot dir (i.e.: . or .. )
+     * @param $entry
+     * @return bool
+     */
+    public static function isDotDir($entry):bool
+    {
+        return $entry == "." || $entry == "..";
+    }
+
+    /**
+     * Check if $path is a dir and is readable.
+     * Return false is you pass a file.
+     * @param string $path
+     * @return bool
+     */
+    public static function isReadable(string $path):bool
+    {
+        return self::isDirSafe($path) && is_readable($path);
     }
 }

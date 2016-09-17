@@ -787,4 +787,43 @@ trait PathDataProvider
             __DIR__ . '/resources/emptydir/' => [__DIR__ . '/resources/emptydir/', true],
         ];
     }
+
+    public function provideisDotDirTests()
+    {
+        return [
+            '\'\'' => ['', false],
+            'null' => [null, false],
+            __DIR__ . '/pippo.txt' => [__DIR__ . '/pippo.txt', false],
+            __DIR__ . '/pippo/pluto/paperino' => [__DIR__ . '/pippo/pluto/paperino', false],
+            __DIR__ . '/../vendor' => [__DIR__ . '/../vendor', false],
+            __DIR__ . '/resources/emptydir/' => [__DIR__ . '/resources/emptydir/', false],
+            '..' => ['..', true],
+            '.' => ['.', true],
+        ];
+    }
+
+    public function provideisReadableTests()
+    {
+        return [
+            '\'\'' => ['', false],
+            'null' => [null, 'TypeError'],
+            __DIR__ . '/pippo.txt' => [__DIR__ . '/pippo.txt', false],
+            __DIR__ . '/pippo/pluto/paperino' => [__DIR__ . '/pippo/pluto/paperino', false],
+            __DIR__ . '/../vendor' => [__DIR__ . '/../vendor', true],
+            __DIR__ . '/resources/emptydir/' => [__DIR__ . '/resources/emptydir/', true],
+        ];
+    }
+
+    public function provideisReadableFileTests()
+    {
+        return [
+            '\'\'' => ['', false],
+            'null' => [null, 'TypeError'],
+            __DIR__ . '/pippo.txt' => [__DIR__ . '/pippo.txt', false],
+            __DIR__ . '/pippo/pluto/paperino' => [__DIR__ . '/pippo/pluto/paperino', false],
+            __DIR__ . '/../vendor' => [__DIR__ . '/../vendor', false],
+            __DIR__ . '/../vendor/autoload.php' => [__DIR__ . '/../vendor/autoload.php', true],
+            __DIR__ . '/resources/emptydir/' => [__DIR__ . '/resources/emptydir/', false],
+        ];
+    }
 }

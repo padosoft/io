@@ -341,4 +341,36 @@ class DirHelperTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($expected, DirHelper::isDirEmpty($path));
         }
     }
+
+    /**
+     * @test
+     * @param $path
+     * @param $expected
+     * @dataProvider provideisDotDirTests
+     */
+    public function isDotDir($path, $expected)
+    {
+        if ($this->expectedIsAnException($expected)) {
+            $this->expectException($expected);
+            DirHelper::isDotDir($path);
+        } else {
+            $this->assertSame($expected, DirHelper::isDotDir($path));
+        }
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $expected
+     * @dataProvider provideisReadableTests
+     */
+    public function isReadable($path, $expected)
+    {
+        if ($this->expectedIsAnException($expected)) {
+            $this->expectException($expected);
+            DirHelper::isReadable($path);
+        } else {
+            $this->assertSame($expected, DirHelper::isReadable($path));
+        }
+    }
 }
