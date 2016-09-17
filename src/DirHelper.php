@@ -297,24 +297,46 @@ class DirHelper
 
         $directorySourceHandle = opendir($directorySource);
         while (false !== ($contents = readdir($directorySourceHandle))) {
-            if (self::isDotDir($contents)) {
-                continue;
-            }
-            $path = $directorySource . "/" . $contents;
-            if (in_array(DirHelper::removeFinalSlash($path), $excludedDirectory)) {
-                continue;
-            }
-            $pathDest = $directoryDestination . "/" . $contents;
-
-            if (is_dir($path)) {
-                self::copy($path, $pathDest, $excludedDirectory);
-            } else {
-                copy($path, $pathDest);
-                is_callable($copied) ? $copied($path, $pathDest) : '';
-            }
+            self::copyInternal(
+                $contents,
+                $directorySource,
+                $directoryDestination,
+                $excludedDirectory,
+                $copied);
         }
         closedir($directorySourceHandle);
         return true;
+    }
+
+    /**
+     * @param $contents
+     * @param $directorySource
+     * @param $directoryDestination
+     * @param $excludedDirectory
+     * @param $copied
+     */
+    private static function copyInternal(
+        $contents,
+        $directorySource,
+        $directoryDestination,
+        array $excludedDirectory = [],
+        \Closure $copied = null
+    ) {
+        if (self::isDotDir($contents)) {
+            return;
+        }
+        $path = $directorySource . "/" . $contents;
+        if (in_array(DirHelper::removeFinalSlash($path), $excludedDirectory)) {
+            return;
+        }
+        $pathDest = $directoryDestination . "/" . $contents;
+
+        if (is_dir($path)) {
+            self::copy($path, $pathDest, $excludedDirectory);
+        } else {
+            copy($path, $pathDest);
+            is_callable($copied) ? $copied($path, $pathDest) : '';
+        }
     }
 
     /**
