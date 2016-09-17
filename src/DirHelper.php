@@ -104,10 +104,10 @@ class DirHelper
      */
     public static function endsWith(string $paths, string $needle) : bool
     {
-        if ($paths === null || $paths == '') {
+        if ($paths == '') {
             return false;
         }
-        if ($needle === null || $needle == '') {
+        if ($needle == '') {
             return false;
         }
 
@@ -134,10 +134,10 @@ class DirHelper
      */
     public static function startsWith(string $paths, string $needle) : bool
     {
-        if ($paths === null || $paths == '') {
+        if ($paths == '') {
             return false;
         }
-        if ($needle === null || $needle == '') {
+        if ($needle == '') {
             return false;
         }
 
@@ -190,7 +190,7 @@ class DirHelper
 
         $directoryHandle = opendir($directory);
         while (false !== ($contents = readdir($directoryHandle))) {
-            if ($contents == '.' || $contents == '..') {
+            if (self::isDotDir($contents)) {
                 continue;
             }
             $path = $directory . "/" . $contents;
@@ -283,7 +283,7 @@ class DirHelper
     ) : bool
     {
         $directorySource = self::removeFinalSlash($directorySource);
-        if (!self::isDirSafe($directorySource) || !is_readable($directorySource)) {
+        if (!self::isReadable($directorySource)) {
             return false;
         }
 
@@ -297,7 +297,7 @@ class DirHelper
 
         $directorySourceHandle = opendir($directorySource);
         while (false !== ($contents = readdir($directorySourceHandle))) {
-            if ($contents == '.' || $contents == '..') {
+            if (self::isDotDir($contents)) {
                 continue;
             }
             $path = $directorySource . "/" . $contents;

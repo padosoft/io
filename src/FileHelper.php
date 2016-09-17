@@ -73,7 +73,7 @@ class FileHelper
      */
     public static function getPathinfoPart(string $filePath, int $fileInfOoptions) : string
     {
-        if ($filePath === null || $filePath == '' || is_dir($filePath) || DirHelper::endsWithSlash($filePath)) {
+        if ($filePath == '' || is_dir($filePath) || DirHelper::endsWithSlash($filePath)) {
             return '';
         }
 
@@ -244,7 +244,7 @@ class FileHelper
      */
     public static function fileExistsSafe(string $filePath) : bool
     {
-        if ($filePath === null || $filePath == '') {
+        if ($filePath == '') {
             return false;
         }
 
@@ -330,7 +330,7 @@ class FileHelper
         int $flags = 0
     ) : bool
     {
-        if ($filename === null || $filename == '') {
+        if ($filename == '') {
             return false;
         }
 
