@@ -76,9 +76,8 @@ trait PathDataProvider
             __DIR__ . '/pippo.txt' => [__DIR__ . '/pippo.txt', []],
             __DIR__ . '/resources/dummy.txt' => [__DIR__ . '/resources/dummy.txt', []],
             __DIR__ . '/resources/dummy.*' => [__DIR__ . '/resources/dummy.*', []],
-            __DIR__ . '/resources/*' => [__DIR__ . '/resources/*', [__DIR__ . '/resources/subdir']],
+            __DIR__ . '/resources/*' => [__DIR__ . '/resources/*', [__DIR__ . '/resources/subdir' ,__DIR__ . '/resources/emptydir']],
             __DIR__ . '/resources' => [__DIR__ . '/resources', [__DIR__ . '/resources/']],
-            __DIR__ . '/resources/*' => [__DIR__ . '/resources/*', [__DIR__ . '/resources/subdir']],
             __DIR__ . '/resources/' => [__DIR__ . '/resources/', [__DIR__ . '/resources/']],
         ];
     }
@@ -458,6 +457,11 @@ trait PathDataProvider
         if (!file_exists($file)) {
             file_put_contents($file, 'dummy');
         }
+
+        $dir = __DIR__ . '/resources/emptydir/';
+        if (!is_dir($dir)) {
+            mkdir($dir, '0777', true);
+        }
     }
 
     /**
@@ -482,6 +486,10 @@ trait PathDataProvider
         }
         if (is_dir(__DIR__ . '/resources/new2/')) {
             rmdir(__DIR__ . '/resources/new2/');
+        }
+
+        if (is_dir(__DIR__ . '/resources/emptydir/')) {
+            @rmdir(__DIR__ . '/resources/emptydir/');
         }
 
         /*
@@ -766,5 +774,17 @@ trait PathDataProvider
             array('/var/www', '/upload/', '/var/www/upload'),
             array('', '', '/'),
         );
+    }
+
+    public function provideisDirEmptyTests()
+    {
+        return [
+            '\'\'' => ['', false],
+            'null' => [null, 'TypeError'],
+            __DIR__ . '/pippo.txt' => [__DIR__ . '/pippo.txt', false],
+            __DIR__ . '/pippo/pluto/paperino' => [__DIR__ . '/pippo/pluto/paperino', false],
+            __DIR__ . '/../vendor' => [__DIR__ . '/../vendor', false],
+            __DIR__ . '/resources/emptydir/' => [__DIR__ . '/resources/emptydir/', true],
+        ];
     }
 }

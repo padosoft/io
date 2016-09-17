@@ -1,5 +1,3 @@
 build
-composer.lock
-docs
 vendor
-tests/Integration/temp
+

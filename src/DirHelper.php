@@ -560,4 +560,29 @@ class DirHelper
         }
         return [$root, $path];
     }
+
+    /**
+     * Check if a directory is empty in efficent way.
+     * Check hidden files too.
+     * @param string $path
+     * @return bool
+     */
+    public static function isDirEmpty(string $path) : bool
+    {
+        //che if no such dir, not a dir, not readable
+        if (!self::isDirSafe($path) || !is_readable($path)) {
+            return false;
+        }
+
+        $result = true;
+        $handle = opendir($path);
+        while (false !== ($entry = readdir($handle))) {
+            if ($entry != "." && $entry != "..") {
+                $result = false;
+                break;
+            }
+        }
+        closedir($handle);
+        return $result;
+    }
 }

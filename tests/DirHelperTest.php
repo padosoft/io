@@ -206,20 +206,23 @@ class DirHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function copy()
     {
-        DirHelper::copy(__DIR__.'/resources', __DIR__.'/resourcesNew',[],function($src, $dest){ echo "copy $src to $dest".PHP_EOL; });
-        $this->assertFileExists(__DIR__.'/resourcesNew/');
-        $this->assertFileExists(__DIR__.'/resourcesNew/dummy.txt');
-        $this->assertFileExists(__DIR__.'/resourcesNew/dummy.csv');
-        $this->assertFileExists(__DIR__.'/resourcesNew/subdir/');
-        $this->assertFileExists(__DIR__.'/resourcesNew/subdir/dummy.txt');
-        DirHelper::delete(__DIR__.'/resourcesNew');
+        DirHelper::copy(__DIR__ . '/resources', __DIR__ . '/resourcesNew', [], function ($src, $dest) {
+            echo "copy $src to $dest" . PHP_EOL;
+        });
+        $this->assertFileExists(__DIR__ . '/resourcesNew/');
+        $this->assertFileExists(__DIR__ . '/resourcesNew/dummy.txt');
+        $this->assertFileExists(__DIR__ . '/resourcesNew/dummy.csv');
+        $this->assertFileExists(__DIR__ . '/resourcesNew/subdir/');
+        $this->assertFileExists(__DIR__ . '/resourcesNew/subdir/dummy.txt');
+        $this->assertFileExists(__DIR__ . '/resourcesNew/emptydir/');
+        DirHelper::delete(__DIR__ . '/resourcesNew');
 
-        DirHelper::copy(__DIR__.'/resources', __DIR__.'/resourcesNew', [__DIR__.'/resources/subdir']);
-        $this->assertFileExists(__DIR__.'/resourcesNew/');
-        $this->assertFileExists(__DIR__.'/resourcesNew/dummy.txt');
-        $this->assertFileExists(__DIR__.'/resourcesNew/dummy.csv');
+        DirHelper::copy(__DIR__ . '/resources', __DIR__ . '/resourcesNew', [__DIR__ . '/resources/subdir']);
+        $this->assertFileExists(__DIR__ . '/resourcesNew/');
+        $this->assertFileExists(__DIR__ . '/resourcesNew/dummy.txt');
+        $this->assertFileExists(__DIR__ . '/resourcesNew/dummy.csv');
         //$this->assertFileNotExists(__DIR__.'/resourcesNew/subdir/dummy.txt');
-        DirHelper::delete(__DIR__.'/resourcesNew');
+        DirHelper::delete(__DIR__ . '/resourcesNew');
     }
 
     /**
@@ -254,6 +257,7 @@ class DirHelperTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(!$isAbsolute, DirHelper::isRelative($path));
     }
+
     /**
      * @test
      * @param $path
@@ -279,7 +283,7 @@ class DirHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @param $path
-     * @param $isLocal$isAbsolute
+     * @param $isLocal $isAbsolute
      * @dataProvider provideIsLocalTests
      */
     public function isLocal($path, $isLocal)
@@ -320,5 +324,21 @@ class DirHelperTest extends \PHPUnit_Framework_TestCase
     public function Njoin($path1, $path2, $expected)
     {
         $this->assertSame($expected, DirHelper::njoin($path1, $path2));
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $expected
+     * @dataProvider provideisDirEmptyTests
+     */
+    public function isDirEmpty($path, $expected)
+    {
+        if ($this->expectedIsAnException($expected)) {
+            $this->expectException($expected);
+            DirHelper::isDirEmpty($path);
+        } else {
+            $this->assertSame($expected, DirHelper::isDirEmpty($path));
+        }
     }
 }

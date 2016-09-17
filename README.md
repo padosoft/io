@@ -97,6 +97,7 @@ if(LogHelper::ftruncatestart('log.csv', 2000)){
 - join
 - njoin
 - canonicalize
+- isDirEmpty
 
 ### FileHelper
 
