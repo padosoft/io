@@ -826,4 +826,40 @@ trait PathDataProvider
             __DIR__ . '/resources/emptydir/' => [__DIR__ . '/resources/emptydir/', false],
         ];
     }
+
+    public function providefile_perms()
+    {
+        return [
+            '\'\'' => ['', false],
+            'null' => [null, 'TypeError'],
+            __DIR__ . '/pippo.txt' => [__DIR__ . '/pippo.txt', false],
+            __DIR__ . '/pippo/pluto/paperino' => [__DIR__ . '/pippo/pluto/paperino', false],
+            __DIR__ . '/../vendor' => [__DIR__ . '/../vendor', '777'],
+            __DIR__ . '/../vendor/autoload.php' => [__DIR__ . '/../vendor/autoload.php', $this->windows_os() ? '666' : '777'],
+        ];
+    }
+
+    public function providefile_permsOctal()
+    {
+        return [
+            '\'\'' => ['', false],
+            'null' => [null, 'TypeError'],
+            __DIR__ . '/pippo.txt' => [__DIR__ . '/pippo.txt', false],
+            __DIR__ . '/pippo/pluto/paperino' => [__DIR__ . '/pippo/pluto/paperino', false],
+            __DIR__ . '/../vendor' => [__DIR__ . '/../vendor', '0777'],
+            __DIR__ . '/../vendor/autoload.php' => [__DIR__ . '/../vendor/autoload.php', $this->windows_os() ? '0666' : '0777'],
+        ];
+    }
+
+    /**
+     * Determine whether the current environment is Windows based.
+     *
+     * @return bool
+     *
+     * @see https://github.com/padosoft/support/blob/master/src/helpers.php
+     */
+    public function windows_os() : bool
+    {
+        return strtolower(substr(PHP_OS, 0, 3)) === 'win';
+    }
 }

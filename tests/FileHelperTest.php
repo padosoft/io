@@ -254,4 +254,36 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($expected, FileHelper::isReadable($path));
         }
     }
+
+    /**
+     * @test
+     * @param $path
+     * @param $expected
+     * @dataProvider providefile_perms
+     */
+    public function file_perms($path, $expected)
+    {
+        if ($this->expectedIsAnException($expected)) {
+            $this->expectException($expected);
+            FileHelper::file_perms($path);
+        } else {
+            $this->assertSame($expected, FileHelper::file_perms($path));
+        }
+    }
+
+    /**
+     * @test
+     * @param $path
+     * @param $expected
+     * @dataProvider providefile_permsOctal
+     */
+    public function file_permsOctal($path, $expected)
+    {
+        if ($this->expectedIsAnException($expected)) {
+            $this->expectException($expected);
+            FileHelper::file_perms($path, true);
+        } else {
+            $this->assertSame($expected, FileHelper::file_perms($path, true));
+        }
+    }
 }

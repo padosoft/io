@@ -433,4 +433,26 @@ class FileHelper
     {
         return self::fileExistsSafe($path) && is_readable($path);
     }
+
+    /**
+     * Gets file or dir permissions in octal form ('0777') or not ('644').
+     * @param string $file
+     * @param bool $octal default false i.e. return '644'
+     * @return bool|string return false if it fails.
+     */
+    public static function file_perms(string $file, bool $octal = false)
+    {
+        if (!file_exists($file)) {
+            return false;
+        }
+
+        $perms = fileperms($file);
+        if($perms===false){
+            return false;
+        }
+
+        $cut = $octal ? -4 : -3;
+
+        return substr(decoct($perms), $cut);
+    }
 }
