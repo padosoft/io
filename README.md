@@ -120,7 +120,7 @@ if(LogHelper::ftruncatestart('log.csv', 2000)){
 - getMimeTypeByFinfo
 - getMimeTypeByMimeContentType
 - isReadable : Check if a path is a file and is readable.
-- file_perms : Gets file or dir permissions in octal form ('0777') or not ('644').
+- filPerms : Gets file or dir permissions in octal form ('0777') or not ('644').
 
 ### LogHelper
 

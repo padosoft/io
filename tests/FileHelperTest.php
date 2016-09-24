@@ -265,9 +265,9 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
     {
         if ($this->expectedIsAnException($expected)) {
             $this->expectException($expected);
-            FileHelper::file_perms($path);
+            FileHelper::filPerms($path);
         } else {
-            $this->assertSame($expected, FileHelper::file_perms($path));
+            $this->assertSame($expected, FileHelper::filPerms($path));
         }
     }
 
@@ -281,9 +281,9 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
     {
         if ($this->expectedIsAnException($expected)) {
             $this->expectException($expected);
-            FileHelper::file_perms($path, true);
+            FileHelper::filPerms($path, true);
         } else {
-            $this->assertSame($expected, FileHelper::file_perms($path, true));
+            $this->assertSame($expected, FileHelper::filPerms($path, true));
         }
     }
 }

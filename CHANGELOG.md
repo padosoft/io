@@ -5,7 +5,7 @@ All Notable changes to `io` will be documented in this file
 # 1.8.0 - 2016-09-24
 
 ### ADD
-- FileHelper::file_perms() : Gets file or dir permissions in octal form ('0777') or not ('644').
+- FileHelper::filPerms() : Gets file or dir permissions in octal form ('0777') or not ('644').
 
 # 1.7.0 - 2016-09-17
 
