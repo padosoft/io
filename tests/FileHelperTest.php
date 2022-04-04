@@ -5,18 +5,19 @@ namespace Padosoft\Io\Test;
 use Padosoft\Io\DirHelper;
 use Padosoft\Io\FileHelper;
 use phpDocumentor\Reflection\File;
+use PHPUnit\Framework\TestCase;
 
-class FileHelperTest extends \PHPUnit_Framework_TestCase
+class FileHelperTest extends TestCase
 {
     use \Padosoft\Io\Test\PathDataProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         //init files and paths needed for tests.
         $this->initFileAndPath();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         //remove created path during test
         $this->removeCreatedPathDuringTest();
@@ -122,7 +123,7 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
         } else {
             $result = FileHelper::findFiles($path);
             $this->assertTrue(is_array($result));
-            $this->assertInternalType('array', $result);
+            $this->assertIsArray($result);
             $this->assertCount(count($expected), $result);
         }
     }
@@ -245,7 +246,7 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
      * @param $expected
      * @dataProvider provideisReadableFileTests
      */
-    public function isReadable($path, $expected)
+    public function isReadableTest($path, $expected)
     {
         if ($this->expectedIsAnException($expected)) {
             $this->expectException($expected);

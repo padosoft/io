@@ -3,12 +3,13 @@
 namespace Padosoft\Io\Test;
 
 use Padosoft\Io\LogHelper;
+use PHPUnit\Framework\TestCase;
 
-class LogHelperTest extends \PHPUnit_Framework_TestCase
+class LogHelperTest extends TestCase
 {
     use \Padosoft\Io\Test\PathDataProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         //init files and paths needed for tests.
         $this->initFileAndPath();
@@ -28,7 +29,7 @@ class LogHelperTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $dir = __DIR__ . '/resources/';
         $file = $dir . 'log.txt';

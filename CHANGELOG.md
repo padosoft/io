@@ -2,6 +2,12 @@
 
 All Notable changes to `io` will be documented in this file
 
+# 1.9.0 - 2022-04-04
+
+### CHANGE
+- Update composer.json
+
+
 # 1.8.0 - 2016-09-24
 
 ### ADD

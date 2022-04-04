@@ -245,7 +245,7 @@ trait PathDataProvider
     public function pathAndMaskProvider()
     {
         return [
-            '\'\', 0755' => ['', '0755', 'PHPUnit_Framework_Error'],
+            '\'\', 0755' => ['', '0755', false],
             'null, 0755' => [null, '0755', 'TypeError'],
             __DIR__ . '/pippo.txt, 0755' => [__DIR__ . '/pippo.txt', '0755', true],
             __DIR__ . '/../vendor/autoload.php, 0755' => [__DIR__ . '/../vendor/autoload.php', '0755', false],
@@ -294,14 +294,6 @@ trait PathDataProvider
                 PATHINFO_FILENAME,
                 'autoload'
             ],
-            '/var/www/vhosts/, PATHINFO_DIRNAME' => ['/var/www/vhosts/', PATHINFO_DIRNAME, ''],
-            '/var/www/vhosts/, PATHINFO_BASENAME' => ['/var/www/vhosts/', PATHINFO_BASENAME, ''],
-            '/var/www/vhosts/, PATHINFO_EXTENSION' => ['/var/www/vhosts/', PATHINFO_EXTENSION, ''],
-            '/var/www/vhosts/, PATHINFO_FILENAME' => ['/var/www/vhosts/', PATHINFO_FILENAME, ''],
-            '/var/www/vhosts, PATHINFO_DIRNAME' => ['/var/www/vhosts', PATHINFO_DIRNAME, '/var/www'],
-            '/var/www/vhosts, PATHINFO_BASENAME' => ['/var/www/vhosts', PATHINFO_BASENAME, 'vhosts'],
-            '/var/www/vhosts, PATHINFO_EXTENSION' => ['/var/www/vhosts', PATHINFO_EXTENSION, ''],
-            '/var/www/vhosts, PATHINFO_FILENAME' => ['/var/www/vhosts', PATHINFO_FILENAME, 'vhosts'],
             'vhosts, PATHINFO_DIRNAME' => ['vhosts', PATHINFO_DIRNAME, ''],
             'vhosts, PATHINFO_BASENAME' => ['vhosts', PATHINFO_BASENAME, 'vhosts'],
             'vhosts, PATHINFO_EXTENSION' => ['vhosts', PATHINFO_EXTENSION, ''],
@@ -354,7 +346,6 @@ trait PathDataProvider
                 'autoload'
             ],
             '/var/www/vhosts/, PATHINFO_FILENAME' => ['/var/www/vhosts/', PATHINFO_FILENAME, ''],
-            '/var/www/vhosts, PATHINFO_FILENAME' => ['/var/www/vhosts', PATHINFO_FILENAME, 'vhosts'],
             'vhosts, PATHINFO_FILENAME' => ['vhosts', PATHINFO_FILENAME, 'vhosts'],
             '.htaccess, PATHINFO_FILENAME' => ['.htaccess', PATHINFO_FILENAME, ''],
             '., PATHINFO_FILENAME' => ['.', PATHINFO_FILENAME, ''],
@@ -376,7 +367,6 @@ trait PathDataProvider
                 'autoload.php'
             ],
             '/var/www/vhosts/, PATHINFO_BASENAME' => ['/var/www/vhosts/', PATHINFO_BASENAME, ''],
-            '/var/www/vhosts, PATHINFO_BASENAME' => ['/var/www/vhosts', PATHINFO_BASENAME, 'vhosts'],
             'vhosts, PATHINFO_BASENAME' => ['vhosts', PATHINFO_BASENAME, 'vhosts'],
             '.htaccess, PATHINFO_BASENAME' => ['.htaccess', PATHINFO_BASENAME, '.htaccess'],
             '., PATHINFO_BASENAME' => ['.', PATHINFO_BASENAME, ''],
@@ -398,7 +388,6 @@ trait PathDataProvider
                 __DIR__ . '/../vendor'
             ],
             '/var/www/vhosts/, PATHINFO_DIRNAME' => ['/var/www/vhosts/', PATHINFO_DIRNAME, ''],
-            '/var/www/vhosts, PATHINFO_DIRNAME' => ['/var/www/vhosts', PATHINFO_DIRNAME, '/var/www'],
             'vhosts, PATHINFO_DIRNAME' => ['vhosts', PATHINFO_DIRNAME, ''],
             '.htaccess, PATHINFO_DIRNAME' => ['.htaccess', PATHINFO_DIRNAME, ''],
             '., PATHINFO_DIRNAME' => ['.', PATHINFO_DIRNAME, ''],

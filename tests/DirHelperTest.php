@@ -3,19 +3,20 @@
 namespace Padosoft\Io\Test;
 
 use Padosoft\Io\DirHelper;
+use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\Node\Directory;
 
-class DirHelperTest extends \PHPUnit_Framework_TestCase
+class DirHelperTest extends TestCase
 {
     use \Padosoft\Io\Test\PathDataProvider;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         //init files and paths needed for tests.
         $this->initFileAndPath();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         //remove created path during test
         $this->removeCreatedPathDuringTest();
@@ -196,7 +197,7 @@ class DirHelperTest extends \PHPUnit_Framework_TestCase
         } else {
             $result = DirHelper::findDirs($path);
             $this->assertTrue(is_array($result));
-            $this->assertInternalType('array', $result);
+            $this->assertIsArray($result);
             $this->assertCount(count($expected), $result);
         }
     }
@@ -364,7 +365,7 @@ class DirHelperTest extends \PHPUnit_Framework_TestCase
      * @param $expected
      * @dataProvider provideisReadableTests
      */
-    public function isReadable($path, $expected)
+    public function isReadableTest($path, $expected)
     {
         if ($this->expectedIsAnException($expected)) {
             $this->expectException($expected);

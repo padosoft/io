@@ -73,7 +73,7 @@ class FileHelper
      */
     public static function getPathinfoPart(string $filePath, int $fileInfOoptions) : string
     {
-        if ($filePath == '' || is_dir($filePath) || DirHelper::endsWithSlash($filePath)) {
+        if ($filePath === null || $filePath == '' || is_dir($filePath) || DirHelper::endsWithSlash($filePath)) {
             return '';
         }
 

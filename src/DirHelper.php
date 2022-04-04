@@ -13,7 +13,7 @@ class DirHelper
      * @param string $filePath
      * @return bool
      */
-    public static function isDirSafe(string $filePath) : bool
+    public static function isDirSafe(string $filePath): bool
     {
         if (!$filePath) {
             return false;
@@ -29,8 +29,12 @@ class DirHelper
      * @param string $modeMask default '0755'
      * @return bool
      */
-    public static function checkDirExistOrCreate(string $filePath, string $modeMask = '0755') : bool
+    public static function checkDirExistOrCreate(string $filePath, string $modeMask = '0755'): bool
     {
+        if ($filePath === null || $filePath === '') {
+            return false;
+        }
+
         if (self::isDirSafe($filePath)) {
             return true;
         }
@@ -49,7 +53,7 @@ class DirHelper
      * @param string $path
      * @return string
      */
-    public static function addFinalSlash(string $path) : string
+    public static function addFinalSlash(string $path): string
     {
         if ($path === null || $path == '') {
             return '/';
@@ -67,7 +71,7 @@ class DirHelper
      * @param array $paths
      * @return array
      */
-    public static function addFinalSlashToAllPaths(array $paths) : array
+    public static function addFinalSlashToAllPaths(array $paths): array
     {
         if (empty($paths)) {
             return [];
@@ -81,7 +85,7 @@ class DirHelper
      * @param string $paths
      * @return bool
      */
-    public static function endsWithSlash(string $paths) : bool
+    public static function endsWithSlash(string $paths): bool
     {
         return self::endsWith($paths, '/');
     }
@@ -91,7 +95,7 @@ class DirHelper
      * @param string $paths
      * @return bool
      */
-    public static function endsWithStar(string $paths) : bool
+    public static function endsWithStar(string $paths): bool
     {
         return self::endsWith($paths, '*');
     }
@@ -102,7 +106,7 @@ class DirHelper
      * @param string $needle
      * @return bool
      */
-    public static function endsWith(string $paths, string $needle) : bool
+    public static function endsWith(string $paths, string $needle): bool
     {
         if ($paths == '') {
             return false;
@@ -121,7 +125,7 @@ class DirHelper
      * @param string $paths
      * @return bool
      */
-    public static function startsWithSlash(string $paths) : bool
+    public static function startsWithSlash(string $paths): bool
     {
         return self::startsWith($paths, '/');
     }
@@ -132,7 +136,7 @@ class DirHelper
      * @param string $needle
      * @return bool
      */
-    public static function startsWith(string $paths, string $needle) : bool
+    public static function startsWith(string $paths, string $needle): bool
     {
         if ($paths == '') {
             return false;
@@ -180,7 +184,7 @@ class DirHelper
      * @param bool $not_remove_dir TRUE if DO NOT REMOVE THE $directory dir but only files.
      * @return bool true if success, otherwise false
      **/
-    public static function delete($directory, bool $not_remove_dir = false) : bool
+    public static function delete($directory, bool $not_remove_dir = false): bool
     {
         $directory = self::removeFinalSlash($directory);
 
@@ -214,7 +218,7 @@ class DirHelper
      * @param $directory
      * @return string
      */
-    public static function removeFinalSlash($directory) : string
+    public static function removeFinalSlash($directory): string
     {
         if (self::endsWithSlash($directory)) {
             $directory = substr($directory, 0, -1);
@@ -228,7 +232,7 @@ class DirHelper
      * @param array $paths
      * @return array
      */
-    public static function removeFinalSlashToAllPaths(array $paths) : array
+    public static function removeFinalSlashToAllPaths(array $paths): array
     {
         if (empty($paths)) {
             return [];
@@ -242,7 +246,7 @@ class DirHelper
      * @param string $directory
      * @return string
      */
-    public static function removeStartSlash($directory) : string
+    public static function removeStartSlash($directory): string
     {
         if (self::startsWithSlash($directory)) {
             $directory = substr($directory, 1);
@@ -256,7 +260,7 @@ class DirHelper
      * @param array $paths
      * @return array
      */
-    public static function removeStartSlashToAllPaths(array $paths) : array
+    public static function removeStartSlashToAllPaths(array $paths): array
     {
         if (empty($paths)) {
             return [];
@@ -280,8 +284,7 @@ class DirHelper
         $directoryDestination,
         array $excludedDirectory = [],
         \Closure $copied = null
-    ) : bool
-    {
+    ): bool {
         $directorySource = self::removeFinalSlash($directorySource);
         if (!self::isReadable($directorySource)) {
             return false;
@@ -362,7 +365,7 @@ class DirHelper
      */
     public static function isAbsoluteUnix($path)
     {
-        return '' !== $path && '/' === $path[0];
+        return null !== $path && '' !== $path && '/' === $path[0];
     }
 
     /**
@@ -376,6 +379,9 @@ class DirHelper
      */
     public static function isAbsoluteWindows($path)
     {
+        if (null === $path) {
+            return false;
+        }
         if ('' === $path) {
             return false;
         }
@@ -391,7 +397,7 @@ class DirHelper
      * @param string $path
      * @return bool
      */
-    protected static function isAbsoluteWindowsRoot($path):bool
+    protected static function isAbsoluteWindowsRoot($path): bool
     {
         if (strlen($path) > 1 && ctype_alpha($path[0]) && ':' === $path[1]) {
             // Special win drive C:
@@ -436,12 +442,12 @@ class DirHelper
     /**
      * Joins a split file system path.
      *
-     * @param  array|string
+     * @param array|string
      *
      * @return string
      * @see https://github.com/laradic/support/blob/master/src/Path.php
      */
-    public static function join() : string
+    public static function join(): string
     {
         $paths = func_get_args();
         if (func_num_args() === 1 && is_array($paths[0])) {
@@ -467,7 +473,7 @@ class DirHelper
      * @return string
      * @see https://github.com/laradic/support/blob/master/src/Path.php
      */
-    public static function njoin() : string
+    public static function njoin(): string
     {
         return self::canonicalize(self::join(func_get_args()));
     }
@@ -589,7 +595,7 @@ class DirHelper
      * @param string $path
      * @return bool
      */
-    public static function isDirEmpty(string $path) : bool
+    public static function isDirEmpty(string $path): bool
     {
         //che if no such dir, not a dir, not readable
         if (!self::isReadable($path)) {
@@ -613,7 +619,7 @@ class DirHelper
      * @param $entry
      * @return bool
      */
-    public static function isDotDir($entry):bool
+    public static function isDotDir($entry): bool
     {
         return $entry == "." || $entry == "..";
     }
@@ -624,7 +630,7 @@ class DirHelper
      * @param string $path
      * @return bool
      */
-    public static function isReadable(string $path):bool
+    public static function isReadable(string $path): bool
     {
         return self::isDirSafe($path) && is_readable($path);
     }
